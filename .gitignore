@@ -1,0 +1,36 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.code-workspace
+
+# Python (future)
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Local data / builds (future)
+data/
+*.duckdb
+.pulumi/
+node_modules/
+site/
+_site/
+
+# OS junk
+desktop.ini
