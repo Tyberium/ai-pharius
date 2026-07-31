@@ -1,170 +1,116 @@
 # ai-pharius - Plan of Travel
 
-> Guilliman owns the books. The Hydra only reads them - then tells you how to win.
+> The Hydra reads the books. Then it tells you how to win.
 
-This is the product roadmap for **ai-pharius**: a standalone 11th-edition battlefield coach. It is intentionally separate from [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman) so the arbiter stays a rules clerk and the coach can grow a different brain.
-
-**Out of scope for early phases:** Battleplan.uk integration. Frontend = **GitHub Pages**. Optional Battleplan link later.
+Roadmap for **ai-pharius**: a standalone 11th-edition battlefield coach with a **GitHub Pages** front door.
 
 ---
 
 ## Principles
 
 1. **Consumer only** - no PDF download, no embed jobs, no corpus writes in this repo.
-2. **Guilliman first for data** - if ai-pharius needs points or datasheets, Guilliman's ingest publishes them; Hydra consumes.
+2. **Ground facts, reason tactics** - never invent points or weapon profiles; do reason target priority from grounded stats.
 3. **Three modes, one API** - RULES (cite), FACTS (lookup), COACH (reason). Route before generating.
 4. **Summary first** - brief recommendation, then why, then citations / caveats.
-5. **Ground facts, reason tactics** - never invent points or weapon profiles; do invent (reason) target priority from grounded stats.
-6. **11th edition only** - same red line as Guilliman.
-7. **Standalone** - GitHub Pages UI + Cloud Run API; no dependency on Battleplan to ship.
-8. **Measure coaching** - golden questions (incl. Scarab Assault Terminators vs mixed Tyranids) before declaring "smart."
+5. **11th edition only**.
+6. **Standalone** - Pages UI + Cloud Run; ship without other product UIs.
+7. **Measure coaching** - golden questions (incl. Scarab Assault Terminators vs mixed Tyranids) before calling it smart.
 
 ---
 
-## Dependency on Guilliman
+## Shared corpus (read-only)
 
-| Hydra needs | Guilliman delivers |
-|-------------|-------------------|
-| Core rules for citations | `warhammer_rules_11th` (exists) |
-| Stratagem / faction text | Faction pack ingest into shared vector index (planned on Guilliman) |
-| Unit points | Munitorum → structured `unit_points` (planned on Guilliman) |
-| Weapon / profile lines | Datasheet parse → structured collections (planned on Guilliman) |
-| Read IAM | Service account: Datastore/Firestore **read** on shared collections |
+Ingest and structured publishes live elsewhere ([roboto-guilliman](https://github.com/Tyberium/roboto-guilliman)). Hydra needs:
 
-ai-pharius phases that need structured units **block** on Guilliman publishing those collections. Coach UX can still start with rules-read + Pages shell.
+| Need | Source (when available) |
+|------|-------------------------|
+| Core rules citations | Vector collection `warhammer_rules_11th` |
+| Stratagem / faction text | Same index after faction packs are ingested |
+| Unit points | Structured `unit_points` (Munitorum-derived) |
+| Weapons / profiles | Structured datasheet collections |
 
----
-
-## Phase 0 - Scaffold (done here)
-
-**Goal:** Name, story, and travel plan in git. No application code.
-
-- [x] Repo under Tyberium (`ai-pharius`)
-- [x] README (persona, ownership, stack sketch)
-- [x] This plan of travel
-- [x] `.gitignore` hygiene
-
-**Exit:** Public GitHub repo with docs only.
+Phases that need units **wait** on those collections existing. The Pages shell and rules-read path do not.
 
 ---
 
-## Phase 1 - Standalone shell (consume rules)
+## Phase 0 - Scaffold (done)
 
-**Goal:** Something live that feels like the Hydra, even if coaching is thin.
-
-**Deliverables:**
-
-1. Minimal FastAPI service (health + ask) on Cloud Run - pattern borrowed from Guilliman, **new** persona prompts.
-2. Read-only retriever against `warhammer_rules_11th` (shared GCP project or cross-project IAM).
-3. GitHub Pages static UI - question box, answer render, "which head is speaking?" flavour. No SPA framework required; keep it boring and shippable.
-4. Intent stub: everything is still RAG-ish, but answers are **summary-first**, not walls of rule text.
-5. Separate chat-history collection (`ai_pharius_chat_history`).
-
-**Does not include:** Munitorum parse, datasheet tools, damage math.
-
-**Exit criteria:**
-
-- Pages site asks a rules question and gets a Hydra-voiced answer with citations.
-- Guilliman unchanged; no ingest code in this repo.
-- Smoke test in CI for `/health`.
+- [x] Repo, README, this plan, `.gitignore`
+- **Exit:** docs-only public repo
 
 ---
 
-## Phase 2 - Facts consumer
+## Phase 1 - Standalone shell
 
-**Goal:** Honest points and weapon answers once Guilliman publishes structured data.
+**Goal:** Live Hydra feel, even if coaching is still thin.
 
-**Depends on Guilliman:** Munitorum Field Manual → bronze/silver → Firestore (or equivalent) unit points; preferably basic datasheet weapon lists.
+1. FastAPI (health + ask) on Cloud Run  
+2. Read-only retriever against the shared rules index  
+3. GitHub Pages ask UI (keep it simple)  
+4. Summary-first answers; Hydra persona (not a rules-dump clerk)  
+5. Own chat-history collection (`ai_pharius_chat_history`)
 
-**Deliverables:**
-
-1. Lookup client for `unit_points` / datasheet docs (exact + fuzzy name match).
-2. Router branch **FACTS** - points questions bypass "invent from training data."
-3. Pages UI shows source stamp (*Munitorum vX.X, as of date*).
-4. Golden tests: Guilliman pts, a few faction spot-checks.
-
-**Exit criteria:**
-
-- "How many points is Roboute Guilliman?" returns grounded number + source.
-- No FACTS answer without a successful lookup.
+**Exit:** Pages question → Hydra-voiced answer with citations; CI smoke on `/health`; no ingest code here.
 
 ---
 
-## Phase 3 - Coach mode (the Hydra proper)
+## Phase 2 - Facts
 
-**Goal:** Multi-angle tactical advice grounded in profiles + rules.
+**Goal:** Honest points / weapon answers from structured lookups.
 
-**Deliverables:**
+1. Lookup client (exact + fuzzy unit names)  
+2. **FACTS** route - no inventing numbers from model memory  
+3. UI shows source stamp (document version / as-of date)  
+4. Golden spot-checks (e.g. named characters' points)
 
-1. Intent router: `RULES` | `FACTS` | `COACH`.
-2. Tool / lookup step before generate: `get_unit`, `get_points`, optional `retrieve_rules`.
-3. Coach system prompt: brief → why (profile compare) → rules note → caveats / conditionals.
-4. Golden eval set (15–30 Qs), including:
-   - Scarab Assault Terminators vs Hormagaunts + Screamer-Killer (split fire)
-   - Stratagem timing ("when do I Rapid Ingress?")
-   - Simple "what should this unit shoot?" with two clear target profiles
-5. Optional: dearer Gemini model **only** on COACH path; Flash for RULES/FACTS.
-6. Pages: show mode badge (Rules / Facts / Coach) so users see which head spoke.
-
-**Exit criteria:**
-
-- Scarab scenario passes human review (right allocation logic, grounded profiles).
-- Eval harness runnable in CI (soft gate at first, hard gate later).
+**Exit:** Points questions return grounded number + source, or an explicit miss.
 
 ---
 
-## Phase 4 - Harden and optional extras
+## Phase 3 - Coach mode
 
-**Goal:** Portfolio-grade ops without Battleplan.
+**Goal:** Multi-angle tactics grounded in profiles + rules.
 
-- Pulumi stack for Cloud Run + IAM (read Guilliman data, write own cache).
-- Rate limiting, billing kill-switch pattern (copy Guilliman ideas).
-- Hybrid search only if Guilliman exposes richer indexes; Hydra does not re-build BM25 corpus ownership.
-- Clarifying questions when board state is incomplete ("Is the Screamer-Killer already damaged? CP left?").
-- Optional Discord/WhatsApp later - same ask pipeline, still standalone brand.
-- Optional Battleplan deep-link - out of band, not a blocker.
+1. Intent router: `RULES` | `FACTS` | `COACH`  
+2. Lookup / tools before generate (`get_unit`, `get_points`, optional rules retrieve)  
+3. Coach prompt: brief → why → rules note → caveats  
+4. Golden eval (15–30 Qs), including Scarab Terminators vs Hormagaunts + Screamer-Killer  
+5. Optional stronger model on COACH only  
+6. Pages mode badge (which head spoke)
+
+**Exit:** Scarab scenario passes human review; eval runnable in CI.
+
+---
+
+## Phase 4 - Harden
+
+- Pulumi: Cloud Run + read IAM on shared collections + write own cache  
+- Rate limits / spend guards  
+- Clarifying questions when board state is incomplete  
+- Optional Discord / messaging later (same ask pipeline)  
+- Optional links from other sites - never a launch blocker  
 
 ---
 
 ## Non-goals (for now)
 
-- Replacing Guilliman or merging repos
-- Second PDF download / embed pipeline
-- Full army-list builder / matched-play tournament client
-- Fine-tuning a custom model (prompt + tools + eval first)
-- Battleplan auth / Firebase ID tokens as a launch requirement
+- Second ingest / embed pipeline  
+- Full army-list builder  
+- Fine-tuning a custom model (prompt + tools + eval first)  
+- Merging with the arbiter / corpus repo  
 
 ---
 
-## Suggested sequencing with Guilliman
+## Open decisions
 
-```
-Now     ai-pharius Phase 0 (docs)
-        Guilliman continues arbiter + corpus growth
-
-Next    ai-pharius Phase 1 (Pages + read rules)
-        Guilliman: Munitorum / datasheet structured publish (enables Phase 2)
-
-Then    ai-pharius Phase 2 (facts)
-        Guilliman: faction pack text in shared index (helps Phase 3)
-
-Then    ai-pharius Phase 3 (coach + eval)
-        Harden both
-```
-
----
-
-## Open decisions (parked)
-
-| Decision | Options | Lean |
-|----------|---------|------|
-| Same GCP project as Guilliman? | Shared vs separate | Shared project, separate SA + collections |
-| Pages custom domain? | github.io vs later domain | `tyberium.github.io/ai-pharius` first |
-| Damage calculator tool? | LLM-only vs expected-wounds helper | Helper in Phase 3 if profiles are solid |
-| Omegon twin surface? | Joke endpoint / alt persona | Later, if ever |
+| Decision | Lean |
+|----------|------|
+| Same GCP project as the corpus? | Yes - separate SA + collections |
+| Pages URL | `tyberium.github.io/ai-pharius` first |
+| Damage-math helper tool? | Phase 3 if profiles are solid |
 
 ---
 
 ## Success snapshot
 
-You open the GitHub Pages site, ask the Scarab question, and ai-pharius answers like a Hydra who **read the datasheets Guilliman filed** - not like a rules PDF on legs.
+Open the Pages site, ask the Scarab question, get a Hydra answer that used **real profiles and rules** - not a PDF regurgitator and not a hallucinated listicle.

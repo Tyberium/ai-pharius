@@ -4,56 +4,44 @@
 
 **AI + Alpharius** - a standalone Warhammer 40,000 **11th edition battlefield coach**.
 
-Where [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman) is the Lord Commander's **rules arbiter** (lex, citations, no hallucination), **ai-pharius** is the Hydra: multi-headed advice on how to *fight* - target priority, fire allocation, stratagem timing, and board plans.
+The Hydra advises how to *fight*: target priority, fire allocation, stratagem timing, and board plans - not just what the rulebook says when you fail a Battle-shock test.
 
 **Which head of the Hydra is speaking?** Ask a coaching question and find out.
 
 ---
 
-## What this is (and is not)
+## What this is
 
-| | **roboto-guilliman** | **ai-pharius** |
-|--|----------------------|----------------|
-| Role | Rules arbiter | Battlefield coach |
-| Owns ingestion | **Yes** - PDFs, embeddings, Munitorum, datasheets | **No** - pure consumer |
-| Answers | "What happens when…?" | "How should I shoot / play this…?" |
-| Frontend | battleplan.uk (planned) | **GitHub Pages** (standalone) |
-| Persona | Stoic Primarch, Codex | Hydra - cunning, multi-angle, meme-aware |
+| | |
+|--|--|
+| Role | Battlefield coach (tactics, not pure rules lawyering) |
+| Edition | **11th / #New40k only** |
+| Frontend | **GitHub Pages** (simple ask UI) |
+| API | Cloud Run (planned) |
+| Data | **Consumer only** - reads a shared rules/facts corpus; does not ingest PDFs or write embeddings |
 
-ai-pharius **never** downloads rules PDFs, embeds chunks, or writes the shared corpus. Guilliman owns the books. The Hydra only **reads**.
-
-Battleplan.uk is **out of scope** for v1. A link from Battleplan may come later; for now the product is self-contained with a simple Pages site so we are not blocked on web-app complexity.
+Corpus ingest and structured unit data live in a separate platform repo ([roboto-guilliman](https://github.com/Tyberium/roboto-guilliman)). This project only consumes that data.
 
 ---
 
 ## Name
 
-- **AI** + **Alpharius** → `ai-pharius`
-- Twin joke optional later (`omegon` as a second surface) - one Hydra is enough for now
+**AI** + **Alpharius** → `ai-pharius`. Multi-headed advice; optional Omegon twin surface later if we want the joke.
 
 ---
 
 ## Architecture (target)
 
 ```
-roboto-guilliman (platform)
-  download → parse → embed → Firestore vectors
-  Munitorum / datasheets → structured collections
-           │
+Shared corpus (rules vectors, later points / datasheets)
            │  read-only
            ▼
-ai-pharius (consumer)
-  intent router: RULES cite | FACTS lookup | COACH reason
-  tools: get_unit / get_points / retrieve_rules
-  API (Cloud Run) + GitHub Pages UI
+ai-pharius
+  intent: RULES cite | FACTS lookup | COACH reason
+  API (Cloud Run) + GitHub Pages
 ```
 
-Shared GCP / Firestore collections (read by ai-pharius, written only by Guilliman):
-
-- `warhammer_rules_11th` - vector rules corpus
-- Future: `unit_points`, datasheet / weapon profiles (structured)
-
-ai-pharius owns only its own runtime state (e.g. `ai_pharius_chat_history`).
+ai-pharius owns its own runtime state only (e.g. chat cache). It never downloads Warhammer PDFs or embeds the rulebooks.
 
 ---
 
@@ -62,13 +50,13 @@ ai-pharius owns only its own runtime state (e.g. `ai_pharius_chat_history`).
 | Layer | Choice |
 |-------|--------|
 | Coach API | FastAPI on Cloud Run (`europe-west1`), scale-to-zero |
-| LLM | Gemini (Flash for simple; stronger model for COACH path) |
-| Rules / facts | Read Guilliman's Firestore (no ingest in this repo) |
-| Frontend | Static site on **GitHub Pages** (simple ask UI) |
-| Infra | Pulumi + GitHub Actions (same pattern as Guilliman) |
-| Cost | Free-tier first; coach path may use a dearer model selectively |
+| LLM | Gemini (cheap path for simple asks; stronger model for COACH) |
+| Rules / facts | Read-only Firestore (shared corpus) |
+| Frontend | Static site on **GitHub Pages** |
+| Infra | Pulumi + GitHub Actions |
+| Cost | Free-tier first |
 
-Exact package layout and code land in later phases - this repo starts as **README + plan**.
+No application code in this repo yet - docs and direction only.
 
 ---
 
@@ -76,39 +64,29 @@ Exact package layout and code land in later phases - this repo starts as **READM
 
 > *I have Scarab Assault Terminators shooting into Hormagaunts and a Screamer-Killer. How should I split fire?*
 
-A good Hydra answer:
+A good answer:
 
-1. **Brief** - bolters into the swarm; missiles / high-Damage into the monster  
+1. **Brief** - bolters into the swarm; high-Damage into the monster  
 2. **Why** - profile comparison (S vs T, AP, Damage vs Wounds)  
-3. **Rules note** - Allocate Attacks / relevant citations from shared corpus  
-4. **Caveats** - CP, strats, board state conditionals  
+3. **Rules note** - Allocate Attacks / relevant citations  
+4. **Caveats** - CP, strats, board-state conditionals  
 
-That answer requires structured unit data + rules retrieval + coaching prompt - not arbiter-only RAG.
+That needs grounded unit data + rules retrieval + a coaching prompt - not a wall of PDF text.
 
 ---
 
 ## Plan of travel
 
-See **[docs/plan_of_travel.md](docs/plan_of_travel.md)** for phases, milestones, and what Guilliman must ship first.
+See **[docs/plan_of_travel.md](docs/plan_of_travel.md)**.
 
-**Short version:**
-
-0. **Scaffold** (this commit) - README, plan, empty repo hygiene  
-1. **Consume rules** - read-only client against Guilliman's vector index; thin API + Pages "ask" shell  
-2. **Facts** - Guilliman publishes Munitorum / datasheets; Hydra looks up points and weapons  
-3. **Coach mode** - intent router, tools, summary-first answers, golden eval (incl. Scarab scenario)  
-4. **Harden** - CI, Pulumi, rate limits, eval gate, optional stronger model for COACH only  
-
----
-
-## Repo status
-
-**No application code yet.** Documentation and direction only.
-
-Edition red line (same as Guilliman): **11th edition / #New40k only.**
+0. Scaffold (this commit)  
+1. Pages + API shell; read shared rules; Hydra voice; summary-first answers  
+2. Facts lookups (points / weapons) once the corpus publishes them  
+3. Coach mode - router, tools, golden eval (incl. Scarab scenario)  
+4. Harden - CI, IAM, rate limits, eval gate  
 
 ---
 
 ## Related
 
-- [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman) - rules arbiter and **sole ingestion owner**
+- [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman) - rules corpus / ingest platform this coach reads from
