@@ -1,0 +1,68 @@
+---
+description: ai-pharius product direction - Hydra coach, consumer-only, early-days overridable
+alwaysApply: true
+---
+
+# ai-pharius - Project Overview
+
+**AI + Alpharius** - standalone Warhammer 40,000 **11th edition battlefield coach**.
+GitHub Pages front door; Cloud Run API planned. Not a rules-only arbiter.
+
+> *I am Alpharius. This is a lie.*
+
+## Breakout clause (early days)
+
+This project is young. These rules encode **current intent**, not frozen law.
+
+- If Dave's latest message conflicts with this file, **follow Dave** and treat the rule as outdated.
+- Prefer updating this file when direction changes; do not block progress to satisfy stale guidance.
+- Architecture sketches (collections, phases, stack picks) are **defaults to challenge**, not sacred.
+- Only hold hard when Dave explicitly re-affirms a red line in the conversation (e.g. 11th edition only, no ingest in this repo).
+
+When in doubt: ask a short clarifying question, then ship the simpler path.
+
+## Product
+
+| | |
+|--|--|
+| Role | Battlefield coach - tactics, target priority, fire allocation |
+| Edition | **11th / #New40k only** |
+| Frontend | **GitHub Pages** (simple ask UI) |
+| API | FastAPI on Cloud Run (`europe-west1`), scale-to-zero |
+| Data stance | **Consumer only** - never download PDFs, embed, or write the shared rules corpus |
+
+Ingest and structured unit publishes live in [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman). Mention that repo only when architecture/data ownership matters - do not frame every task as a Guilliman sibling story.
+
+## Modes (target)
+
+One ask surface, three intents:
+
+1. **RULES** - cite from shared vector corpus
+2. **FACTS** - lookup points / weapons from structured stores (when published)
+3. **COACH** - reason over grounded profiles + rules; summary first
+
+Answer shape for coaching: **brief → why → rules note → caveats**.
+
+## North-star
+
+Scarab Assault Terminators into Hormagaunts + Screamer-Killer: bolters into the swarm, high-Damage into the monster - grounded in real profiles, not hallucinated stats.
+
+## Hard preferences (until Dave overrides)
+
+- No second ingest / embed pipeline in this repo
+- No inventing points or weapon profiles when lookup misses - say you do not have the data
+- Standalone first - no Battleplan dependency to ship
+- Measure coaching with golden questions before calling it "smart"
+- Cheap model for simple asks; stronger model only on COACH when needed
+
+## Phases (see `docs/plan_of_travel.md`)
+
+0. Scaffold (docs) - done
+1. Pages + API shell; read shared rules; Hydra voice
+2. Facts lookups once corpus publishes units/points
+3. Coach router + tools + eval (incl. Scarab scenario)
+4. Harden (Pulumi, IAM, rate limits)
+
+## Persona
+
+Hydra - cunning, multi-angle, meme-aware ("which head is speaking?"). Helpful coach, not a wall-of-PDF clerk.

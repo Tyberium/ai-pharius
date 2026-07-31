@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ai-pharius - Battlefield Coach</title>
+    <meta
+      name="description"
+      content="AI + Alpharius. Standalone Warhammer 40,000 11th edition battlefield coach."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Sora:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <div class="hydra-mark" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+          <path d="M100 170 V95" />
+          <path class="neck n1" d="M100 110 C70 90 45 70 40 40" />
+          <path class="neck n2" d="M100 105 C100 70 100 50 100 28" />
+          <path class="neck n3" d="M100 110 C130 90 155 70 160 40" />
+          <circle class="head h1" cx="38" cy="34" r="10" fill="currentColor" stroke="none" />
+          <circle class="head h2" cx="100" cy="22" r="11" fill="currentColor" stroke="none" />
+          <circle class="head h3" cx="162" cy="34" r="10" fill="currentColor" stroke="none" />
+        </g>
+      </svg>
+    </div>
+
+    <main class="hero">
+      <p class="brand">ai-pharius</p>
+      <h1 class="headline">Which head is speaking?</h1>
+      <p class="lede">
+        Standalone 11th-edition battlefield coach. Target priority, fire allocation, and the plan
+        that wins the turn - not a rules PDF on legs.
+      </p>
+
+      <form class="ask" id="ask-form" autocomplete="off">
+        <label class="ask-label" for="ask-input">Ask the Hydra</label>
+        <textarea
+          id="ask-input"
+          name="q"
+          rows="4"
+          maxlength="2000"
+          placeholder="e.g. Scarab Assault Terminators into Hormagaunts and a Screamer-Killer - how do I split fire?"
+        ></textarea>
+        <div class="ask-row">
+          <button type="submit" class="cta" id="ask-submit">Consult the Hydra</button>
+          <p class="status" id="ask-status" role="status">
+            Coach API offline - scaffold only. Voice arrives in Phase 1.
+          </p>
+        </div>
+      </form>
+
+      <p class="lie">I am Alpharius. This is a lie.</p>
+    </main>
+
+    <script src="site.js"></script>
+  </body>
+</html>

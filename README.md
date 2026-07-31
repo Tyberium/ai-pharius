@@ -1,5 +1,7 @@
 # ai-pharius
 
+**Live site:** [https://tyberium.github.io/ai-pharius/](https://tyberium.github.io/ai-pharius/)
+
 > *I am Alpharius. This is a lie.*
 
 **AI + Alpharius** - a standalone Warhammer 40,000 **11th edition battlefield coach**.
@@ -16,7 +18,7 @@ The Hydra advises how to *fight*: target priority, fire allocation, stratagem ti
 |--|--|
 | Role | Battlefield coach (tactics, not pure rules lawyering) |
 | Edition | **11th / #New40k only** |
-| Frontend | **GitHub Pages** (simple ask UI) |
+| Frontend | **GitHub Pages** (`docs/`) |
 | API | Cloud Run (planned) |
 | Data | **Consumer only** - reads a shared rules/facts corpus; does not ingest PDFs or write embeddings |
 
@@ -56,7 +58,7 @@ ai-pharius owns its own runtime state only (e.g. chat cache). It never downloads
 | Infra | Pulumi + GitHub Actions |
 | Cost | Free-tier first |
 
-No application code in this repo yet - docs and direction only.
+Pages UI is scaffolded; coach API is not wired yet.
 
 ---
 
@@ -79,7 +81,7 @@ That needs grounded unit data + rules retrieval + a coaching prompt - not a wall
 
 See **[docs/plan_of_travel.md](docs/plan_of_travel.md)**.
 
-0. Scaffold (this commit)  
+0. Scaffold (docs) - done  
 1. Pages + API shell; read shared rules; Hydra voice; summary-first answers  
 2. Facts lookups (points / weapons) once the corpus publishes them  
 3. Coach mode - router, tools, golden eval (incl. Scarab scenario)  
