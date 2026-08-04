@@ -51,7 +51,7 @@
         align-items: baseline;
         justify-content: space-between;
         gap: 1rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
       }
 
       .brand {
@@ -86,8 +86,8 @@
       }
 
       .lede {
-        margin: 0 0 1.5rem;
-        max-width: 52rem;
+        margin: 0 0 0.75rem;
+        max-width: 48rem;
         color: var(--mist);
         line-height: 1.55;
         font-size: 0.95rem;
@@ -104,14 +104,14 @@
         overflow: auto;
         border: 1px solid rgba(45, 212, 168, 0.25);
         background:
-          radial-gradient(ellipse 70% 50% at 60% 20%, rgba(45, 212, 168, 0.08), transparent 55%),
+          radial-gradient(ellipse 70% 50% at 60% 20%, rgba(45, 212, 168, 0.07), transparent 55%),
           linear-gradient(165deg, #04110e 0%, #0a1f1a 50%, #061412 100%);
         border-radius: 2px;
       }
 
       .stage svg {
         display: block;
-        min-width: 2200px;
+        min-width: 2800px;
         width: 100%;
         height: auto;
       }
@@ -163,312 +163,327 @@
       </header>
 
       <p class="lede">
-        Full system map for the match-planning coach. You bring a list and opponent info; the
-        Hydra authenticates, routes intent, grounds facts and rules, runs comparative combat math,
-        and returns a Match Plan. Zoom the browser for more detail.
+        Match-planning coach system map. Left-to-right flow: you authenticate, the API routes
+        intent, tools ground answers, the corpus stays read-only.
       </p>
-      <p class="hint">Diagram viewBox 2600 x 1680 - scroll horizontally on small screens.</p>
+      <p class="hint">ViewBox 3200 x 1800 - zoom or scroll for detail.</p>
 
       <div class="stage" role="img" aria-label="ai-pharius system architecture diagram">
+        <!--
+          Layout columns (x):
+            80-420    Browser
+            520-860   Identity
+            960-2100  GCP runtime (modes / tools)
+            2260-3120 Shared corpus
+
+          Layout rows (y) inside GCP:
+            520 API + Router
+            780 Mode row
+            1040 Tool row
+            1280 Notes
+        -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 2600 1680"
-          width="2600"
-          height="1680"
+          viewBox="0 0 3200 1800"
+          width="3200"
+          height="1800"
         >
           <defs>
-            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <marker id="a-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M0 0 L10 5 L0 10 z" fill="#2dd4a8" />
             </marker>
-            <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <marker id="a-lime" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M0 0 L10 5 L0 10 z" fill="#c4f062" />
             </marker>
-            <marker id="arrow-mist" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <marker id="a-mist" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M0 0 L10 5 L0 10 z" fill="#9eb8ad" />
             </marker>
           </defs>
 
-          <!-- soft grid -->
-          <g opacity="0.1" stroke="#2dd4a8" stroke-width="1">
-            <path d="M0 80 H2600 M0 160 H2600 M0 240 H2600 M0 320 H2600 M0 400 H2600 M0 480 H2600 M0 560 H2600 M0 640 H2600 M0 720 H2600 M0 800 H2600 M0 880 H2600 M0 960 H2600 M0 1040 H2600 M0 1120 H2600 M0 1200 H2600 M0 1280 H2600 M0 1360 H2600 M0 1440 H2600 M0 1520 H2600 M0 1600 H2600" />
-            <path d="M80 0 V1680 M160 0 V1680 M240 0 V1680 M320 0 V1680 M400 0 V1680 M480 0 V1680 M560 0 V1680 M640 0 V1680 M720 0 V1680 M800 0 V1680 M880 0 V1680 M960 0 V1680 M1040 0 V1680 M1120 0 V1680 M1200 0 V1680 M1280 0 V1680 M1360 0 V1680 M1440 0 V1680 M1520 0 V1680 M1600 0 V1680 M1680 0 V1680 M1760 0 V1680 M1840 0 V1680 M1920 0 V1680 M2000 0 V1680 M2080 0 V1680 M2160 0 V1680 M2240 0 V1680 M2320 0 V1680 M2400 0 V1680 M2480 0 V1680" />
-          </g>
-
           <!-- Title -->
-          <text x="60" y="55" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="34" font-weight="900" letter-spacing="3">ai-pharius</text>
-          <text x="310" y="55" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="22">Match-Planning Coach - System Architecture</text>
-          <text x="60" y="90" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="15">
-            Derive tactics from real profiles + rules. Probability via combat-math tool only. Flag opponent assumptions. Never invent numbers.
+          <text x="80" y="70" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="28" font-weight="900" letter-spacing="2">ai-pharius</text>
+          <text x="300" y="70" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="18">Match-Planning Coach · System Architecture</text>
+          <text x="80" y="105" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="13">
+            Derive from real profiles + rules · probability via combat-math only · flag assumptions · never invent numbers
           </text>
 
-          <!-- ========== 1 BROWSER ========== -->
-          <rect x="40" y="120" width="700" height="300" rx="4" fill="#0c1c18" stroke="#2dd4a8" stroke-width="2" />
-          <text x="60" y="155" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="14" letter-spacing="3">1  YOUR BROWSER</text>
+          <!-- ========== ZONE 1: BROWSER ========== -->
+          <rect x="60" y="160" width="400" height="420" rx="3" fill="#0c1c18" stroke="#2dd4a8" stroke-width="1.5" />
+          <text x="80" y="195" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">1 · BROWSER</text>
 
-          <rect x="70" y="180" width="200" height="100" rx="2" fill="#071210" stroke="#c4f062" stroke-width="2" />
-          <text x="170" y="225" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="16">YOU</text>
-          <text x="170" y="252" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">lists + questions</text>
+          <rect x="100" y="230" width="160" height="70" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="180" y="260" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="13">YOU</text>
+          <text x="180" y="282" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">lists + asks</text>
 
-          <rect x="310" y="180" width="390" height="100" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="2" />
-          <text x="505" y="220" text-anchor="middle" fill="#d7fff0" font-family="Orbitron, sans-serif" font-size="15">GitHub Pages UI</text>
-          <text x="505" y="245" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">static shell (docs/) · Match Plan form</text>
-          <text x="505" y="265" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">holds Firebase ID token client-side</text>
+          <rect x="290" y="230" width="140" height="70" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" />
+          <text x="360" y="258" text-anchor="middle" fill="#d7fff0" font-family="Orbitron, sans-serif" font-size="12">Pages UI</text>
+          <text x="360" y="280" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">docs/ shell</text>
 
-          <rect x="70" y="300" width="630" height="95" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1.5" />
-          <text x="385" y="335" text-anchor="middle" fill="#d7fff0" font-family="Orbitron, sans-serif" font-size="13">INPUT</text>
-          <text x="385" y="360" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">
-            Your list (always) + opponent: Tier1 full list · Tier2 faction+detachment · Tier3 faction
-          </text>
-          <text x="385" y="380" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">
-            Optional: mission / deployment type
-          </text>
+          <rect x="100" y="340" width="330" height="100" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1" />
+          <text x="265" y="370" text-anchor="middle" fill="#d7fff0" font-family="Orbitron, sans-serif" font-size="11">INPUT</text>
+          <text x="265" y="395" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Your list (always)</text>
+          <text x="265" y="415" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Opponent: T1 list · T2 faction+det · T3 faction</text>
+          <text x="265" y="430" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">Optional: mission / deployment</text>
 
-          <!-- ========== 2 IDENTITY ========== -->
-          <rect x="780" y="120" width="420" height="300" rx="4" fill="#0c1c18" stroke="#c4f062" stroke-width="2" />
-          <text x="800" y="155" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="14" letter-spacing="3">2  IDENTITY</text>
+          <rect x="100" y="470" width="330" height="80" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1" />
+          <text x="265" y="505" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Holds Firebase ID token</text>
+          <text x="265" y="528" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Renders answer / Match Plan</text>
 
-          <rect x="810" y="185" width="360" height="120" rx="2" fill="#071210" stroke="#c4f062" stroke-width="2" />
-          <text x="990" y="235" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="16">Firebase Auth</text>
-          <text x="990" y="262" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="13">Google Sign-In (own Firebase app)</text>
-          <text x="990" y="285" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">returns ID token to Pages</text>
+          <!-- ========== ZONE 2: IDENTITY ========== -->
+          <rect x="520" y="160" width="360" height="420" rx="3" fill="#0c1c18" stroke="#c4f062" stroke-width="1.5" />
+          <text x="540" y="195" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">2 · IDENTITY</text>
 
-          <rect x="810" y="325" width="360" height="70" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
-          <text x="990" y="355" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12" letter-spacing="1">AUTH GATE</text>
-          <text x="990" y="378" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">API allowlists Dave UID only · else 401</text>
+          <rect x="560" y="250" width="280" height="100" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="700" y="290" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="13">Firebase Auth</text>
+          <text x="700" y="315" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Google Sign-In</text>
+          <text x="700" y="335" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">own Firebase app</text>
 
-          <!-- ========== 3 GCP RUNTIME ========== -->
-          <rect x="40" y="460" width="1680" height="1080" rx="4" fill="#0c1c18" stroke="#2dd4a8" stroke-width="2.5" />
-          <text x="60" y="500" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="15" letter-spacing="3">3  GCP · ai-pharius RUNTIME</text>
-          <text x="480" y="500" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">europe-west1 · Cloud Run scale-to-zero · Firebase allowlist on API</text>
+          <rect x="560" y="400" width="280" height="100" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="700" y="440" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12">AUTH GATE</text>
+          <text x="700" y="465" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Dave UID allowlist</text>
+          <text x="700" y="485" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">else API returns 401</text>
+
+          <!-- ========== ZONE 3: GCP ========== -->
+          <rect x="940" y="160" width="1200" height="1480" rx="3" fill="#0c1c18" stroke="#2dd4a8" stroke-width="1.5" />
+          <text x="960" y="195" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">3 · GCP RUNTIME</text>
+          <text x="1160" y="195" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">europe-west1 · scale-to-zero</text>
 
           <!-- API -->
-          <rect x="80" y="540" width="300" height="120" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="2.5" />
-          <text x="230" y="585" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="16">Cloud Run API</text>
-          <text x="230" y="612" text-anchor="middle" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">FastAPI</text>
-          <text x="230" y="635" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">verify ID token + allowlist</text>
+          <rect x="1000" y="250" width="220" height="90" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" />
+          <text x="1110" y="285" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13">Cloud Run API</text>
+          <text x="1110" y="308" text-anchor="middle" fill="#d7fff0" font-family="Sora, sans-serif" font-size="11">FastAPI</text>
+          <text x="1110" y="328" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">verify token + allowlist</text>
 
           <!-- Router -->
-          <polygon points="620,560 760,600 620,640 480,600" fill="#071210" stroke="#c4f062" stroke-width="2.5" />
-          <text x="620" y="595" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="14">INTENT</text>
-          <text x="620" y="615" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="14">ROUTER</text>
+          <polygon points="1480,255 1600,295 1480,335 1360,295" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="1480" y="290" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12">INTENT</text>
+          <text x="1480" y="310" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12">ROUTER</text>
 
-          <!-- Mode boxes -->
-          <rect x="80" y="720" width="240" height="110" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="2" />
-          <text x="200" y="765" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="15">RULES</text>
-          <text x="200" y="790" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">Rules Retriever</text>
-          <text x="200" y="810" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">cite vector corpus</text>
+          <!-- Mode lane label -->
+          <text x="1000" y="420" fill="#1a8f72" font-family="Orbitron, sans-serif" font-size="10" letter-spacing="2">MODES</text>
 
-          <rect x="360" y="720" width="240" height="110" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="2" />
-          <text x="480" y="765" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="15">FACTS</text>
-          <text x="480" y="790" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">Facts Lookup</text>
-          <text x="480" y="810" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">points / profiles / abilities</text>
+          <rect x="1000" y="440" width="180" height="80" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1.5" />
+          <text x="1090" y="475" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13">RULES</text>
+          <text x="1090" y="498" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">vector cite</text>
 
-          <rect x="640" y="720" width="240" height="110" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="2" />
-          <text x="760" y="765" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="15">COACH</text>
-          <text x="760" y="790" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">Coach Reasoner</text>
-          <text x="760" y="810" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">single tactical question</text>
+          <rect x="1240" y="440" width="180" height="80" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1.5" />
+          <text x="1330" y="475" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13">FACTS</text>
+          <text x="1330" y="498" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">points / profiles</text>
 
-          <rect x="920" y="720" width="280" height="110" rx="2" fill="#071210" stroke="#c4f062" stroke-width="2.5" />
-          <text x="1060" y="760" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="15">MATCH PLAN</text>
-          <text x="1060" y="785" text-anchor="middle" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">Orchestrator (flagship)</text>
-          <text x="1060" y="808" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">drives COACH + math + builds</text>
+          <rect x="1480" y="440" width="180" height="80" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1.5" />
+          <text x="1570" y="475" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13">COACH</text>
+          <text x="1570" y="498" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">single tactical Q</text>
 
-          <!-- Plan sections (output shape, not a service) -->
-          <rect x="1260" y="540" width="420" height="290" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" stroke-dasharray="6 4" />
-          <text x="1470" y="575" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="12" letter-spacing="2">MATCH PLAN OUTPUT</text>
-          <text x="1470" y="598" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">(document shape - not a service)</text>
-          <text x="1285" y="635" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">1 Threat assessment</text>
-          <text x="1285" y="665" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">2 Priority targets</text>
-          <text x="1285" y="695" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">3 Attachment / support</text>
-          <text x="1285" y="725" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">4 Stratagem / CP budget</text>
-          <text x="1285" y="755" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">5 Deployment / screening</text>
-          <text x="1285" y="785" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">6 Win-condition framing</text>
-          <text x="1470" y="815" text-anchor="middle" fill="#c4f062" font-family="Sora, sans-serif" font-size="12">guessed units labelled as assumptions</text>
+          <rect x="1720" y="440" width="200" height="80" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="1820" y="470" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12">MATCH PLAN</text>
+          <text x="1820" y="493" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">orchestrator · flagship</text>
 
-          <!-- Tools row -->
-          <rect x="80" y="900" width="380" height="130" rx="2" fill="#071210" stroke="#c4f062" stroke-width="2.5" />
-          <text x="270" y="945" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="15">Combat Math Calculator</text>
-          <text x="270" y="972" text-anchor="middle" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">comparative what-if (deterministic)</text>
-          <text x="270" y="998" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">hit · wound · save · expected damage</text>
+          <!-- Tool lane -->
+          <text x="1000" y="600" fill="#1a8f72" font-family="Orbitron, sans-serif" font-size="10" letter-spacing="2">TOOLS</text>
 
-          <rect x="500" y="900" width="300" height="130" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="2" />
-          <text x="650" y="945" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="16">Gemini</text>
-          <text x="650" y="972" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">Vertex AI</text>
-          <text x="650" y="998" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">cheap RULES/FACTS · stronger COACH/PLAN</text>
+          <rect x="1000" y="620" width="260" height="90" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="1130" y="655" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12">Combat Math</text>
+          <text x="1130" y="678" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">comparative what-if</text>
+          <text x="1130" y="698" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">hit · wound · save · D</text>
 
-          <rect x="840" y="900" width="300" height="130" rx="2" fill="#071210" stroke="#c4f062" stroke-width="2" />
-          <text x="990" y="940" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="13">common_builds.yaml</text>
-          <text x="990" y="965" text-anchor="middle" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">owned in this repo</text>
-          <text x="990" y="988" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">Dave-curated · bundled with deploy</text>
-          <text x="990" y="1010" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">likely units for tiers 2-3</text>
+          <rect x="1320" y="620" width="220" height="90" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" />
+          <text x="1430" y="655" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13">Gemini</text>
+          <text x="1430" y="678" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">Vertex AI</text>
+          <text x="1430" y="698" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">cheap / stronger by mode</text>
 
-          <rect x="1180" y="900" width="300" height="130" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="2" />
-          <text x="1330" y="945" text-anchor="middle" fill="#d7fff0" font-family="Orbitron, sans-serif" font-size="13">ai_pharius_chat_history</text>
-          <text x="1330" y="972" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">Firestore · owned here</text>
-          <text x="1330" y="998" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">runtime cache only</text>
+          <rect x="1600" y="620" width="220" height="90" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="1710" y="650" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="11">common_builds.yaml</text>
+          <text x="1710" y="673" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">this repo · Dave-curated</text>
+          <text x="1710" y="693" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">bundled · tiers 2-3</text>
 
-          <!-- Reasoning discipline -->
-          <rect x="80" y="1070" width="1400" height="110" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
-          <text x="100" y="1110" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="13" letter-spacing="2">REASONING DISCIPLINE</text>
-          <text x="100" y="1145" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">
-            Derive tactics from T / Sv / Invul / W / ability text + attack-resolution rules. No memorized matchups.
-            Probability claims only via the combat-math tool. Golden evals score the reasoning process, not stored answers.
+          <rect x="1880" y="620" width="200" height="90" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1.5" />
+          <text x="1980" y="655" text-anchor="middle" fill="#d7fff0" font-family="Orbitron, sans-serif" font-size="11">chat_history</text>
+          <text x="1980" y="678" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">Firestore · owned here</text>
+          <text x="1980" y="698" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">runtime cache</text>
+
+          <!-- Output shape -->
+          <rect x="1000" y="780" width="520" height="220" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1" stroke-dasharray="5 4" />
+          <text x="1260" y="815" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">MATCH PLAN OUTPUT</text>
+          <text x="1260" y="838" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">document shape · not a service</text>
+          <text x="1030" y="875" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">1 Threat assessment</text>
+          <text x="1030" y="900" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">2 Priority targets</text>
+          <text x="1030" y="925" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">3 Attachment / support</text>
+          <text x="1260" y="875" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">4 Stratagem / CP budget</text>
+          <text x="1260" y="900" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">5 Deployment / screening</text>
+          <text x="1260" y="925" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">6 Win-condition framing</text>
+          <text x="1260" y="970" text-anchor="middle" fill="#c4f062" font-family="Sora, sans-serif" font-size="11">guessed units labelled as assumptions</text>
+
+          <!-- Discipline + ownership notes -->
+          <rect x="1580" y="780" width="500" height="220" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1" />
+          <text x="1600" y="815" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">REASONING</text>
+          <text x="1600" y="850" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">Derive from T / Sv / Invul / W</text>
+          <text x="1600" y="875" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">+ ability text + attack rules.</text>
+          <text x="1600" y="910" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">No memorized matchups.</text>
+          <text x="1600" y="945" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">Dice math via calculator only.</text>
+          <text x="1600" y="980" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Golden evals score the process.</text>
+
+          <rect x="1000" y="1060" width="1080" height="120" rx="2" fill="#071210" stroke="#9eb8ad" stroke-width="1" />
+          <text x="1020" y="1100" fill="#9eb8ad" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">OWNERSHIP</text>
+          <text x="1020" y="1135" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">
+            Here: prompts, router, Match Plan, common_builds.yaml, chat cache, allowlist.
+          </text>
+          <text x="1020" y="1160" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">
+            Read-only: warhammer_rules_11th + unit_points/datasheets (roboto-guilliman).
           </text>
 
-          <!-- Data ownership strip -->
-          <rect x="80" y="1220" width="1400" height="100" rx="2" fill="#071210" stroke="#9eb8ad" stroke-width="1.5" />
-          <text x="100" y="1260" fill="#9eb8ad" font-family="Orbitron, sans-serif" font-size="13" letter-spacing="2">OWNED HERE vs READ-ONLY</text>
-          <text x="100" y="1295" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">
-            Owned here: prompts, router, Match Plan orchestration, common_builds.yaml, chat cache, allowlist.
-            Read-only: warhammer_rules_11th + unit_points/datasheets (published by roboto-guilliman).
+          <rect x="1000" y="1240" width="1080" height="100" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1" />
+          <text x="1020" y="1280" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">HAPPY PATH</text>
+          <text x="1020" y="1315" fill="#d7fff0" font-family="Sora, sans-serif" font-size="12">
+            Sign in → Bearer POST → verify + allowlist → route → mode tools → Gemini → render plan
           </text>
 
-          <!-- Flow summary bottom of GCP -->
-          <rect x="80" y="1360" width="1400" height="140" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" />
-          <text x="100" y="1400" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13" letter-spacing="2">REQUEST FLOW (happy path)</text>
-          <text x="100" y="1435" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">
-            Sign in → Pages holds ID token → POST /ask with Bearer token → API verifies + allowlists → Intent Router
+          <text x="1000" y="1410" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">
+            Source: docs/design.md · Phases: docs/plan_of_travel.md · 11th edition only
           </text>
-          <text x="100" y="1465" fill="#d7fff0" font-family="Sora, sans-serif" font-size="14">
-            → RULES | FACTS | COACH | MATCH PLAN → tools + Gemini → answer/plan → Pages renders · API may write chat cache
-          </text>
-
-          <!-- ========== 4 SHARED CORPUS ========== -->
-          <rect x="1780" y="120" width="780" height="1420" rx="4" fill="#0c1c18" stroke="#9eb8ad" stroke-width="2" />
-          <text x="1800" y="160" fill="#9eb8ad" font-family="Orbitron, sans-serif" font-size="14" letter-spacing="3">4  SHARED CORPUS</text>
-          <text x="1800" y="195" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="14">READ ONLY</text>
-          <text x="1800" y="230" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">published by roboto-guilliman</text>
-          <text x="1800" y="258" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">ai-pharius never writes here</text>
-          <text x="1800" y="286" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">Firestore collections (same GCP project lean)</text>
-
-          <rect x="1820" y="330" width="700" height="200" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="2" />
-          <text x="2170" y="400" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="18">warhammer_rules_11th</text>
-          <text x="2170" y="440" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">vector index</text>
-          <text x="2170" y="475" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">core rules · stratagems · detachment text</text>
-
-          <rect x="1820" y="580" width="700" height="200" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="2" />
-          <text x="2170" y="650" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="18">unit_points / datasheets</text>
-          <text x="2170" y="690" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">structured · Munitorum-derived</text>
-          <text x="2170" y="725" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">weapons · profiles · ability text</text>
-
-          <rect x="1820" y="840" width="700" height="280" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1.5" stroke-dasharray="6 4" />
-          <text x="2170" y="895" text-anchor="middle" fill="#9eb8ad" font-family="Orbitron, sans-serif" font-size="13" letter-spacing="2">OWNERSHIP BOUNDARY</text>
-          <text x="1850" y="950" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">Ingest, embed, and PDF download</text>
-          <text x="1850" y="990" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">live only in roboto-guilliman.</text>
-          <text x="1850" y="1030" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">ai-pharius consumes published collections</text>
-          <text x="1850" y="1070" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">and owns Match Plan runtime + common_builds.</text>
-
-          <rect x="1820" y="1180" width="700" height="300" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" />
-          <text x="2170" y="1240" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13" letter-spacing="2">WHO READS WHAT</text>
-          <text x="1850" y="1295" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">RULES → warhammer_rules_11th</text>
-          <text x="1850" y="1340" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">FACTS → unit_points / datasheets</text>
-          <text x="1850" y="1385" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">COACH / MATCH PLAN → both + math tool</text>
-          <text x="1850" y="1430" fill="#d7fff0" font-family="Sora, sans-serif" font-size="15">MATCH PLAN (tiers 2-3) → common_builds.yaml</text>
-
-          <!-- ========== CONNECTIONS (drawn after boxes so arrows sit on top) ========== -->
-
-          <!-- You -> Pages -->
-          <path d="M270 230 H310" stroke="#c4f062" stroke-width="2.5" fill="none" marker-end="url(#arrow-warn)" />
-          <text x="275" y="218" fill="#c4f062" font-family="Sora, sans-serif" font-size="11">submit</text>
-
-          <!-- Pages <-> Firebase -->
-          <path d="M700 210 H810" stroke="#c4f062" stroke-width="2" fill="none" marker-end="url(#arrow-warn)" />
-          <text x="720" y="198" fill="#c4f062" font-family="Sora, sans-serif" font-size="12">Sign in</text>
-          <path d="M810 280 C760 310, 740 310, 700 260" stroke="#c4f062" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#arrow-warn)" />
-          <text x="720" y="300" fill="#c4f062" font-family="Sora, sans-serif" font-size="11">ID token</text>
-
-          <!-- Pages -> API (Bearer) -->
-          <path d="M505 420 V540" stroke="#2dd4a8" stroke-width="3" fill="none" marker-end="url(#arrow)" />
-          <text x="515" y="490" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="12">Bearer + request</text>
-
-          <!-- API -> Router -->
-          <path d="M380 600 H480" stroke="#2dd4a8" stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
-          <text x="400" y="585" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="11">route</text>
-
-          <!-- Router fan-out (clean vertical stubs) -->
-          <path d="M560 640 V700 H200 V720" stroke="#2dd4a8" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-          <text x="280" y="690" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="11">RULES</text>
-
-          <path d="M600 640 V690 H480 V720" stroke="#2dd4a8" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-          <text x="520" y="680" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="11">FACTS</text>
-
-          <path d="M640 640 V690 H760 V720" stroke="#2dd4a8" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-          <text x="680" y="680" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="11">COACH</text>
-
-          <path d="M700 620 H1060 V720" stroke="#c4f062" stroke-width="2.5" fill="none" marker-end="url(#arrow-warn)" />
-          <text x="860" y="610" fill="#c4f062" font-family="Sora, sans-serif" font-size="12">MATCH PLAN</text>
-
-          <!-- Match Plan uses COACH (not direct math) -->
-          <path d="M920 775 H880" stroke="#c4f062" stroke-width="2.5" fill="none" marker-end="url(#arrow-warn)" />
-          <text x="885" y="765" fill="#c4f062" font-family="Sora, sans-serif" font-size="11">orchestrates</text>
-
-          <!-- Match Plan -> common_builds (correct target) -->
-          <path d="M1060 830 V900" stroke="#c4f062" stroke-width="2" fill="none" marker-end="url(#arrow-warn)" />
-          <text x="1070" y="870" fill="#c4f062" font-family="Sora, sans-serif" font-size="11">assumptions</text>
-
-          <!-- Match Plan -> output shape -->
-          <path d="M1200 775 H1260" stroke="#2dd4a8" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow)" />
-          <text x="1205" y="765" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="10">assembles</text>
-
-          <!-- COACH -> Math only (Match Plan reaches math via COACH) -->
-          <path d="M760 830 V900" stroke="#c4f062" stroke-width="2.5" fill="none" marker-end="url(#arrow-warn)" />
-          <text x="770" y="870" fill="#c4f062" font-family="Sora, sans-serif" font-size="11">what-if calls</text>
-
-          <!-- Mode tools -> Gemini -->
-          <path d="M200 830 V870 H650 V900" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
-          <path d="M480 830 V870" stroke="#2dd4a8" stroke-width="1.5" fill="none" />
-          <path d="M760 830 V870" stroke="#2dd4a8" stroke-width="1.5" fill="none" />
-          <text x="300" y="860" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="11">generate</text>
-
-          <!-- Gemini -> API (response stays inside GCP) -->
-          <path d="M500 965 H420 V660" stroke="#2dd4a8" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-          <text x="430" y="820" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="11">response</text>
-
-          <!-- API -> cache -->
-          <path d="M230 660 V690 H1330 V900" stroke="#9eb8ad" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow-mist)" />
-          <text x="900" y="705" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">write cache</text>
-
-          <!-- API -> Pages response -->
-          <path d="M120 540 C60 480, 60 440, 400 420" stroke="#2dd4a8" stroke-width="2.5" fill="none" stroke-dasharray="6 4" marker-end="url(#arrow)" />
-          <text x="70" y="470" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="12">render</text>
-
-          <!-- Corpus reads: route along top of corpus column to avoid spaghetti through plan box -->
-          <path d="M320 775 H1760 V430 H1820" stroke="#2dd4a8" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-          <text x="1500" y="760" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="12">RULES read</text>
-
-          <path d="M600 775 H1720 V680 H1820" stroke="#2dd4a8" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-          <text x="1500" y="790" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="12">FACTS read</text>
-
-          <path d="M880 775 H1700 V500" stroke="#2dd4a8" stroke-width="1.5" fill="none" stroke-dasharray="5 4" marker-end="url(#arrow)" />
-          <path d="M1700 500 V680" stroke="#2dd4a8" stroke-width="1.5" fill="none" stroke-dasharray="5 4" />
-          <text x="1500" y="820" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="12">COACH / PLAN read both</text>
-
-          <!-- Footer -->
-          <text x="60" y="1620" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="14">
-            Source of truth: docs/design.md · Phases: docs/plan_of_travel.md · Personal tool · 11th edition only
-          </text>
-          <text x="60" y="1655" fill="#1a8f72" font-family="Orbitron, sans-serif" font-size="12" letter-spacing="2">
+          <text x="1000" y="1445" fill="#1a8f72" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">
             I AM ALPHARIUS. THIS IS A LIE.
           </text>
+
+          <!-- ========== ZONE 4: CORPUS ========== -->
+          <rect x="2220" y="160" width="900" height="1480" rx="3" fill="#0c1c18" stroke="#9eb8ad" stroke-width="1.5" />
+          <text x="2240" y="195" fill="#9eb8ad" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">4 · SHARED CORPUS</text>
+          <text x="2240" y="225" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12">READ ONLY</text>
+          <text x="2240" y="255" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">published by roboto-guilliman</text>
+          <text x="2240" y="278" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">ai-pharius never writes here</text>
+
+          <rect x="2280" y="320" width="780" height="140" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" />
+          <text x="2670" y="375" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="15">warhammer_rules_11th</text>
+          <text x="2670" y="405" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">vector index · rules · stratagems · detachments</text>
+          <text x="2670" y="430" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">Firestore</text>
+
+          <rect x="2280" y="520" width="780" height="140" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1.5" />
+          <text x="2670" y="575" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="15">unit_points / datasheets</text>
+          <text x="2670" y="605" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="12">structured · Munitorum-derived</text>
+          <text x="2670" y="630" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="11">weapons · profiles · abilities · Firestore</text>
+
+          <rect x="2280" y="740" width="780" height="200" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1" stroke-dasharray="5 4" />
+          <text x="2670" y="790" text-anchor="middle" fill="#9eb8ad" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">BOUNDARY</text>
+          <text x="2320" y="835" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">Ingest / embed / PDF download = Guilliman only</text>
+          <text x="2320" y="870" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">ai-pharius consumes published collections</text>
+          <text x="2320" y="905" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">+ owns Match Plan runtime + common_builds</text>
+
+          <rect x="2280" y="1020" width="780" height="220" rx="2" fill="#071210" stroke="#2dd4a8" stroke-width="1" />
+          <text x="2670" y="1070" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">WHO READS WHAT</text>
+          <text x="2320" y="1120" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">RULES → warhammer_rules_11th</text>
+          <text x="2320" y="1160" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">FACTS → unit_points / datasheets</text>
+          <text x="2320" y="1200" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">COACH / MATCH PLAN → both + math tool</text>
+
+          <!-- ========== EDGES: dedicated lanes, orthogonal, minimal crossings ========== -->
+
+          <!-- Lane A (y=265): You → Pages -->
+          <path d="M260 265 H290" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
+          <text x="265" y="255" fill="#c4f062" font-family="Sora, sans-serif" font-size="10">submit</text>
+
+          <!-- Lane B (y=210): Pages → Firebase (sign in) -->
+          <path d="M430 245 H520 H560" stroke="#c4f062" stroke-width="1.5" fill="none" marker-end="url(#a-lime)" />
+          <text x="455" y="235" fill="#c4f062" font-family="Sora, sans-serif" font-size="10">Sign in</text>
+
+          <!-- Lane C (y=350): Firebase → Pages (token) - below, dashed -->
+          <path d="M560 320 H480 V280 H430" stroke="#c4f062" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#a-lime)" />
+          <text x="470" y="340" fill="#c4f062" font-family="Sora, sans-serif" font-size="10">ID token</text>
+
+          <!-- Lane D: Pages → API via bottom gutter (avoids Identity) -->
+          <path d="M360 550 V640 H980 V295 H1000" stroke="#2dd4a8" stroke-width="2" fill="none" marker-end="url(#a-teal)" />
+          <text x="700" y="630" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="10">Bearer + request</text>
+
+          <!-- Auth gate annotation toward API corridor -->
+          <path d="M700 500 V600" stroke="#c4f062" stroke-width="1" fill="none" stroke-dasharray="3 3" marker-end="url(#a-lime)" />
+          <text x="710" y="580" fill="#c4f062" font-family="Sora, sans-serif" font-size="10">enforced on API</text>
+
+          <!-- API → Router (horizontal) -->
+          <path d="M1220 295 H1360" stroke="#2dd4a8" stroke-width="1.75" fill="none" marker-end="url(#a-teal)" />
+          <text x="1250" y="285" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="10">route</text>
+
+          <!-- Router fan-out: vertical bus at y=380, then drops into each mode -->
+          <path d="M1480 335 V380" stroke="#c4f062" stroke-width="1.5" fill="none" />
+          <path d="M1090 380 H1820" stroke="#c4f062" stroke-width="1.25" fill="none" />
+
+          <path d="M1090 380 V440" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
+          <text x="1100" y="415" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">RULES</text>
+
+          <path d="M1330 380 V440" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
+          <text x="1340" y="415" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">FACTS</text>
+
+          <path d="M1570 380 V440" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
+          <text x="1580" y="415" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">COACH</text>
+
+          <path d="M1820 380 V440" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
+          <text x="1830" y="415" fill="#c4f062" font-family="Sora, sans-serif" font-size="9">PLAN</text>
+
+          <!-- Match Plan → COACH (orchestrates) -->
+          <path d="M1720 480 H1660" stroke="#c4f062" stroke-width="1.5" fill="none" marker-end="url(#a-lime)" />
+          <text x="1665" y="470" fill="#c4f062" font-family="Sora, sans-serif" font-size="9">uses</text>
+
+          <!-- Match Plan → common_builds (down then left into builds) -->
+          <path d="M1820 520 V580 H1710 V620" stroke="#c4f062" stroke-width="1.5" fill="none" marker-end="url(#a-lime)" />
+          <text x="1830" y="560" fill="#c4f062" font-family="Sora, sans-serif" font-size="9">assumptions</text>
+
+          <!-- Match Plan → output assemble -->
+          <path d="M1720 520 V760 H1520 V780" stroke="#2dd4a8" stroke-width="1.25" fill="none" stroke-dasharray="4 3" marker-end="url(#a-teal)" />
+          <text x="1540" y="750" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">assembles</text>
+
+          <!-- COACH → Combat Math -->
+          <path d="M1570 520 V580 H1130 V620" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
+          <text x="1300" y="570" fill="#c4f062" font-family="Sora, sans-serif" font-size="9">what-if</text>
+
+          <!-- Modes → Gemini bus (y=560) -->
+          <path d="M1090 520 V545 H1430" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
+          <path d="M1330 520 V545" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
+          <path d="M1570 520 V545 H1430" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
+          <path d="M1430 545 V620" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
+          <text x="1440" y="575" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">generate</text>
+
+          <!-- Gemini → API response (left corridor inside GCP) -->
+          <path d="M1320 665 H960 V340 H1000" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
+          <text x="970" y="500" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">response</text>
+
+          <!-- API → chat cache -->
+          <path d="M1220 310 H2100 V665 H2080" stroke="#9eb8ad" stroke-width="1.25" fill="none" stroke-dasharray="4 3" marker-end="url(#a-mist)" />
+          <text x="2000" y="300" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="9">cache write</text>
+
+          <!-- API → Pages render (return via lower gutter, offset from Bearer) -->
+          <path d="M1000 340 V670 H360 V550" stroke="#2dd4a8" stroke-width="1.5" fill="none" stroke-dasharray="5 4" marker-end="url(#a-teal)" />
+          <text x="500" y="690" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">render</text>
+
+          <!-- Corpus reads: right corridor from modes to corpus, separate y lanes -->
+          <!-- RULES → rules collection -->
+          <path d="M1180 480 H2160 V390 H2280" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
+          <text x="2050" y="470" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">RULES read</text>
+
+          <!-- FACTS → datasheets -->
+          <path d="M1420 480 H2140 V590 H2280" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
+          <text x="2050" y="575" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">FACTS read</text>
+
+          <!-- COACH / PLAN → both (dashed, mid corridor) -->
+          <path d="M1660 480 H2120 V480" stroke="#2dd4a8" stroke-width="1.25" fill="none" stroke-dasharray="4 3" />
+          <path d="M2120 390 V590" stroke="#2dd4a8" stroke-width="1.25" fill="none" stroke-dasharray="4 3" />
+          <path d="M2120 390 H2280" stroke="#2dd4a8" stroke-width="1.25" fill="none" stroke-dasharray="4 3" marker-end="url(#a-teal)" />
+          <path d="M2120 590 H2280" stroke="#2dd4a8" stroke-width="1.25" fill="none" stroke-dasharray="4 3" marker-end="url(#a-teal)" />
+          <text x="1990" y="500" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">COACH/PLAN read</text>
         </svg>
       </div>
 
       <section class="legend" aria-label="Legend">
         <article>
-          <h2><span class="swatch" style="background:#2dd4a8"></span>Teal flow</h2>
-          <p>Primary request and corpus read paths - Pages to API to tools to shared data and back.</p>
+          <h2><span class="swatch" style="background:#2dd4a8"></span>Teal</h2>
+          <p>Primary request and corpus read paths.</p>
         </article>
         <article>
-          <h2><span class="swatch" style="background:#c4f062"></span>Lime accents</h2>
-          <p>Auth, Match Plan flagship path, combat-math tool, and common_builds assumptions.</p>
+          <h2><span class="swatch" style="background:#c4f062"></span>Lime</h2>
+          <p>Auth, Match Plan, combat-math, common_builds.</p>
         </article>
         <article>
           <h2><span class="swatch" style="background:#9eb8ad"></span>Mist / dashed</h2>
-          <p>Read-only boundary, cache writes, and output-shape annotations (not live services).</p>
+          <p>Cache writes, returns, and output-shape notes.</p>
         </article>
         <article>
-          <h2>Diamond = router</h2>
-          <p>Intent router fans out to RULES, FACTS, COACH, or MATCH PLAN before generation.</p>
+          <h2>Layout</h2>
+          <p>Four columns left-to-right. Router fans out on a horizontal bus. Corpus reads travel a right-side corridor.</p>
         </article>
       </section>
     </div>
