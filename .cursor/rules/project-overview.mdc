@@ -6,7 +6,7 @@ alwaysApply: true
 # ai-pharius - Project Overview
 
 **AI + Alpharius** - personal Warhammer 40,000 **11th edition match-planning coach**.
-GitHub Pages front door; Cloud Run API planned. Not a mid-game chatbot, not a rules-only arbiter.
+GitHub Pages front door; Cloud Run API planned.
 
 > *I am Alpharius. This is a lie.*
 
@@ -20,7 +20,7 @@ This project is young. These rules encode **current intent**, not frozen law.
 - If Dave's latest message conflicts with this file, **follow Dave** and treat the rule as outdated.
 - Prefer updating this file when direction changes; do not block progress to satisfy stale guidance.
 - Architecture sketches (collections, phases, stack picks) are **defaults to challenge**, not sacred.
-- Only hold hard when Dave explicitly re-affirms a red line in the conversation (e.g. 11th edition only, no ingest in this repo, auth required, reason don't memorize, no mid-game consult).
+- Only hold hard when Dave explicitly re-affirms a red line in the conversation (e.g. 11th edition only, no ingest in this repo, auth required, reason don't memorize).
 
 When in doubt: ask a short clarifying question, then ship the simpler path.
 
@@ -28,7 +28,7 @@ When in doubt: ask a short clarifying question, then ship the simpler path.
 
 | | |
 |--|--|
-| Role | Pre-game match-planning coach - not a mid-game consult tool |
+| Role | Match-planning coach |
 | Edition | **11th / #New40k only** |
 | Frontend | **GitHub Pages** (simple ask/plan UI) |
 | Auth | Firebase Google sign-in; API allowlisted to Dave |
@@ -56,9 +56,7 @@ Thousand Sons list in hand, opponent faction known (Tyranids) but no list confir
 - No inventing points, profiles, or hit rates when a lookup misses - say you do not have the data
 - **No memorized tactical answers** - attachment picks, target priority, and "good vs" calls must be derived from real profiles/ability text/rules every time, checked against golden evals that score the reasoning process, not stored answers
 - Any hit/wound/save/expected-damage claim must go through the comparative (what-if) combat-math tool, never model arithmetic
-- **No mid-game live consultation** as a design target - Match Plan is pre-game only
 - Auth required from Phase 1 of the API - allowlisted to Dave; unauthenticated requests fail closed
-- Photo/vision board-reading is not planned - unreliable without camera calibration
 - Opponent-list uncertainty must be stated explicitly, not smoothed over - use tiered inputs (full list / faction+detachment / faction only) and `common_builds.yaml` assumptions, clearly labelled as assumptions
 - Standalone first - no Battleplan dependency to ship
 - Cheap model for simple asks; stronger model only on COACH/Match Plan when needed
@@ -74,4 +72,4 @@ Thousand Sons list in hand, opponent faction known (Tyranids) but no list confir
 
 ## Persona
 
-Hydra - cunning, multi-angle, meme-aware ("which head is speaking?"). A coach that plans with you before the game, not a wall-of-PDF clerk and not a mid-game crutch.
+Hydra - cunning, multi-angle, meme-aware ("which head is speaking?"). Plans with you from lists and real rules, not from memorized matchups.

@@ -1,6 +1,6 @@
 # ai-pharius - Design
 
-> Reason from real rules and real profiles to build you a match plan before the game starts - never a memorized matchup, never a mid-game interruption.
+> Reason from real rules and real profiles to build you a match plan - never a memorized matchup.
 
 This is the canonical **why** doc. Phased delivery lives in [plan_of_travel.md](plan_of_travel.md).
 
@@ -10,7 +10,7 @@ This is the canonical **why** doc. Phased delivery lives in [plan_of_travel.md](
 
 **ai-pharius** is a personal 11th-edition match-planning coach. Give it your list and what you know about the opponent, and it reasons - from unit profiles, rules mechanics, and dice probability - to a concrete plan: threats to expect, targets to prioritize, characters to attach, stratagems to budget, and how to deploy.
 
-It is **not** a mid-game chatbot. You don't consult the Hydra between turns - you consult it before the game, once, with everything it needs to think hard.
+You bring everything it needs up front so it can think hard once and hand you a plan you can take to the table.
 
 Every tactical conclusion must be **derivable**: read off toughness/saves/invulnerability/wounds/keywords/ability text, apply the actual attack-resolution rules, and run the real probability math. Nothing is a memorized "X beats Y" - if the Hydra can't show the reasoning chain, it shouldn't give the answer.
 
@@ -20,7 +20,7 @@ Every tactical conclusion must be **derivable**: read off toughness/saves/invuln
 
 **Input:** your full list, plus whatever you know about the opponent - see input tiers below - plus optionally mission/deployment type.
 
-**Output:** a single pre-game plan covering:
+**Output:** a single plan covering:
 
 1. **Threat assessment** - what can hurt you badly, and with what (derived from real weapon profiles vs. your defenses)
 2. **Priority targets** - what you can efficiently remove and why (calculator-backed expected damage, unit vs. unit)
@@ -43,8 +43,8 @@ For tiers 2 and 3, the plan must **state its assumptions explicitly** (e.g. "ass
 
 Not official rules text, not a fixed fact, and it goes stale as the meta shifts - handled separately from the shared rules corpus:
 
-- **v1: Dave-curated notes** (`data/common_builds.yaml` in this repo) - short, hand-maintained per faction/detachment, updated occasionally. Not a pipeline, not automated ingestion - a file Dave edits. This is coaching product knowledge, not the official corpus, so it's fine to live here despite the "consumer only" rule for rules/facts.
-- **Later, if worth it:** automated scraping of tournament list sites would be a real ingestion pipeline - if we ever want that, it belongs in roboto-guilliman as another published collection, keeping ai-pharius a pure consumer. Not planned for v1.
+- **v1: Dave-curated notes** (`data/common_builds.yaml` in this repo) - short, hand-maintained per faction/detachment, updated occasionally. Not a pipeline - a file Dave edits. Coaching product knowledge, so it lives here; rules/facts stay consumer-only from the shared corpus.
+- **Later, if worth it:** automated scraping of tournament list sites would be a real ingestion pipeline - if we ever want that, it belongs in roboto-guilliman as another published collection. Not planned for v1.
 
 ---
 
@@ -65,9 +65,7 @@ Same reasoning discipline as Match Plan, just narrower scope. Match Plan is effe
 
 | Non-goal | Why |
 |----------|-----|
-| Mid-game live consultation | Explicitly not the target - you plan before the game, not between turns |
 | Memorized tactical answers (attachment picks, target priority, "good vs" lists) | Must be derived from real profiles/rules/math every time, or it's not trustworthy when the meta shifts |
-| Photo / board-scanning | Distance-from-photo, unit-ID-from-paint, and LoS-from-2D need calibration and real CV - not reliable with chat-only multimodal models. Not planned. |
 | Unauthenticated access | Pages shell may be public; the Cloud Run API requires Google sign-in allowlisted to Dave only |
 | Second ingest / embed pipeline for rules or facts | Corpus ownership stays in roboto-guilliman; this repo reads only |
 | Automated meta-list scraping | v1 uses a Dave-curated file; automated scraping (if ever) belongs in roboto-guilliman |
@@ -236,4 +234,4 @@ Answer shape: **brief -> why -> rules note -> caveats** for COACH; structured se
 
 ## Success snapshot
 
-Sign in, hand the Hydra your Thousand Sons list and "playing Tyranids, don't know their list," and get back a plan that correctly flags a likely Screamer-Killer/Hormagaunt mix as an assumption, gets the Rubric-attachment call right by reasoning (not memory), and backs every damage claim with calculator numbers - not a PDF regurgitator, not a hallucinated listicle, and not something you needed mid-game.
+Sign in, hand the Hydra your Thousand Sons list and "playing Tyranids, don't know their list," and get back a plan that correctly flags a likely Screamer-Killer/Hormagaunt mix as an assumption, gets the Rubric-attachment call right by reasoning from profiles and ability text, and backs every damage claim with calculator numbers.

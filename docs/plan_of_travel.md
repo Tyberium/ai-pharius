@@ -1,6 +1,6 @@
 # ai-pharius - Plan of Travel
 
-> The Hydra reads the books, thinks it through before the game, and hands you a plan.
+> The Hydra reads the books, thinks it through, and hands you a plan.
 
 Roadmap for **ai-pharius**: a personal 11th-edition match-planning coach with a **GitHub Pages** front door and an **authenticated** Cloud Run API.
 
@@ -13,7 +13,7 @@ Canonical mission, non-goals, diagrams, and reasoning philosophy: **[design.md](
 1. **Consumer only for rules/facts** - no PDF download, no embed jobs, no corpus writes in this repo.
 2. **Reason, never memorize** - tactical conclusions (attachments, target priority, "good vs") must be derivable from real profiles, ability text, and rules every time. No hardcoded matchup answers.
 3. **Dice math is a tool** - any hit/wound/save/expected-damage claim goes through a deterministic, comparative (what-if) calculator, not LLM arithmetic.
-4. **Match Plan is the flagship mode** - pre-game, given your list plus whatever you know of the opponent. Not a mid-game chatbot.
+4. **Match Plan is the flagship mode** - your list plus whatever you know of the opponent, reasoned into one plan.
 5. **State your assumptions** - when the opponent's exact list is unknown, say so and flag guessed units clearly (backed by a Dave-curated `common_builds.yaml`, not invented).
 6. **Auth from day one of the API** - Firebase Google sign-in; allowlisted to Dave. Pages shell may be public; the API is not usable without it.
 7. **11th edition only**.
@@ -89,7 +89,7 @@ Phases that need units **wait** on those collections existing. The Pages shell, 
 
 ## Phase 4 - Match Plan (flagship mode)
 
-**Goal:** Given your list plus whatever you know of the opponent, produce one pre-game plan.
+**Goal:** Given your list plus whatever you know of the opponent, produce one plan.
 
 1. Accept your full list + opponent info at any input tier (full list / faction+detachment / faction only)
 2. `common_builds.yaml` supplies likely-unit assumptions at tiers 2-3; every assumption is labelled as such in the output
@@ -115,9 +115,7 @@ Auth is already in Phase 1 - this phase tightens ops, cost, and quality gates.
 
 ## Non-goals (see design.md for rationale)
 
-- Mid-game live consultation
 - Memorized tactical answers of any kind
-- Photo / vision board-reading
 - Second ingest/embed pipeline for rules or facts
 - Automated meta-list scraping (Dave-curated file only, for now)
 - Full army-list builder

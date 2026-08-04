@@ -6,7 +6,7 @@
 
 **AI + Alpharius** - a personal Warhammer 40,000 **11th edition match-planning coach**.
 
-Hand the Hydra your list and what you know about the opponent, and it reasons from real unit profiles, real rules, and real dice probability to build you a plan: threats to expect, targets to prioritize, characters to attach, stratagems to budget, how to deploy. It is **not** a mid-game chatbot - you plan before the game, not between turns.
+Hand the Hydra your list and what you know about the opponent, and it reasons from real unit profiles, real rules, and real dice probability to build you a plan: threats to expect, targets to prioritize, characters to attach, stratagems to budget, how to deploy.
 
 **Which head of the Hydra is speaking?** Ask it to build a plan and find out.
 
@@ -18,7 +18,7 @@ This is a **personal tool**: the Pages UI is a static shell; all reasoning goes 
 
 | | |
 |--|--|
-| Role | Pre-game match-planning coach (not a mid-game consult, not pure rules lawyering) |
+| Role | Match-planning coach |
 | Edition | **11th / #New40k only** |
 | Frontend | **GitHub Pages** (`docs/`) |
 | Auth | Firebase Google sign-in -> allowlisted Cloud Run API |
@@ -85,7 +85,7 @@ A good plan:
 3. **Priority targets + attachment calls** - e.g. correctly reasoning that a fast support character's revive-style ability is wasted on a small unit that won't survive to trigger it, and recommending the alternative - derived, not memorized
 4. **Stratagem/CP budget, deployment, win-condition framing**
 
-That needs grounded unit data, rules retrieval, a comparative combat-math tool, and first-principles reasoning - not a wall of PDF text, and not something you need mid-game.
+That needs grounded unit data, rules retrieval, a comparative combat-math tool, and first-principles reasoning.
 
 ---
 
@@ -97,7 +97,7 @@ See **[docs/plan_of_travel.md](docs/plan_of_travel.md)** and **[docs/design.md](
 1. Pages + API shell; auth allowlist; read shared rules (RULES)
 2. Facts lookups (points/weapons) once the corpus publishes them
 3. Comparative combat-math tool + COACH (single-question reasoning), golden evals begin
-4. Match Plan (flagship) - list + opponent-info at any tier, full pre-game plan
+4. Match Plan (flagship) - list + opponent-info at any tier, full plan
 5. Harden - CI, IAM, rate limits, eval gate
 
 ---
