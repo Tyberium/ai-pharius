@@ -1,6 +1,7 @@
 # ai-pharius
 
-**Live site:** [https://tyberium.github.io/ai-pharius/](https://tyberium.github.io/ai-pharius/)
+**Live site:** [https://tyberium.github.io/ai-pharius/](https://tyberium.github.io/ai-pharius/)  
+**Architecture diagram:** [docs/architecture.html](docs/architecture.html) · live once pushed: [https://tyberium.github.io/ai-pharius/architecture.html](https://tyberium.github.io/ai-pharius/architecture.html)
 
 > *I am Alpharius. This is a lie.*
 

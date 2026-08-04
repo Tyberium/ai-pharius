@@ -107,6 +107,8 @@ Exact API shape lands in the Match Plan / COACH phase of the plan of travel - th
 
 ## Architecture
 
+Full annotated system map (hi-res SVG): **[architecture.html](architecture.html)**.
+
 ```mermaid
 flowchart TB
     subgraph browser [Your Browser]
