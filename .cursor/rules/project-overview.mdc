@@ -1,14 +1,17 @@
 ---
-description: ai-pharius product direction - Hydra coach, consumer-only, early-days overridable
+description: ai-pharius product direction - Hydra match-planning coach, consumer-only, early-days overridable
 alwaysApply: true
 ---
 
 # ai-pharius - Project Overview
 
-**AI + Alpharius** - standalone Warhammer 40,000 **11th edition battlefield coach**.
-GitHub Pages front door; Cloud Run API planned. Not a rules-only arbiter.
+**AI + Alpharius** - personal Warhammer 40,000 **11th edition match-planning coach**.
+GitHub Pages front door; Cloud Run API planned. Not a mid-game chatbot, not a rules-only arbiter.
 
 > *I am Alpharius. This is a lie.*
+
+Canonical design (mission, diagrams, reasoning philosophy): `docs/design.md`.
+Phased delivery: `docs/plan_of_travel.md`.
 
 ## Breakout clause (early days)
 
@@ -17,7 +20,7 @@ This project is young. These rules encode **current intent**, not frozen law.
 - If Dave's latest message conflicts with this file, **follow Dave** and treat the rule as outdated.
 - Prefer updating this file when direction changes; do not block progress to satisfy stale guidance.
 - Architecture sketches (collections, phases, stack picks) are **defaults to challenge**, not sacred.
-- Only hold hard when Dave explicitly re-affirms a red line in the conversation (e.g. 11th edition only, no ingest in this repo).
+- Only hold hard when Dave explicitly re-affirms a red line in the conversation (e.g. 11th edition only, no ingest in this repo, auth required, reason don't memorize, no mid-game consult).
 
 When in doubt: ask a short clarifying question, then ship the simpler path.
 
@@ -25,44 +28,50 @@ When in doubt: ask a short clarifying question, then ship the simpler path.
 
 | | |
 |--|--|
-| Role | Battlefield coach - tactics, target priority, fire allocation |
+| Role | Pre-game match-planning coach - not a mid-game consult tool |
 | Edition | **11th / #New40k only** |
-| Frontend | **GitHub Pages** (simple ask UI) |
+| Frontend | **GitHub Pages** (simple ask/plan UI) |
+| Auth | Firebase Google sign-in; API allowlisted to Dave |
 | API | FastAPI on Cloud Run (`europe-west1`), scale-to-zero |
-| Data stance | **Consumer only** - never download PDFs, embed, or write the shared rules corpus |
+| Data stance | **Consumer only** for rules/facts - never download PDFs, embed, or write the shared corpus. Owns one hand-curated file (`common_builds.yaml`) for likely-opponent-unit notes - not a pipeline. |
 
 Ingest and structured unit publishes live in [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman). Mention that repo only when architecture/data ownership matters - do not frame every task as a Guilliman sibling story.
 
 ## Modes (target)
 
-One ask surface, three intents:
-
 1. **RULES** - cite from shared vector corpus
-2. **FACTS** - lookup points / weapons from structured stores (when published)
-3. **COACH** - reason over grounded profiles + rules; summary first
+2. **FACTS** - lookup points / weapons / ability text from structured stores (when published)
+3. **COACH** - single tactical question (attachment picks, target priority, "good vs X"); reasons from real profiles/rules; probability claims via the comparative combat-math tool
+4. **MATCH PLAN** (flagship) - your list + whatever you know of the opponent, at any input tier; orchestrates COACH across threats, targets, attachments, stratagem budget, deployment, win-conditions into one plan; explicitly flags any guessed opponent units as assumptions
 
-Answer shape for coaching: **brief → why → rules note → caveats**.
+Answer shape: **brief -> why -> rules note -> caveats** for COACH; structured sections for Match Plan.
 
 ## North-star
 
-Scarab Assault Terminators into Hormagaunts + Screamer-Killer: bolters into the swarm, high-Damage into the monster - grounded in real profiles, not hallucinated stats.
+Thousand Sons list in hand, opponent faction known (Tyranids) but no list confirmed: correctly flag the assumed opponent build, get the Rubric-Marine attachment call right by reasoning (not memorized), and back every damage claim with the comparative calculator.
 
 ## Hard preferences (until Dave overrides)
 
-- No second ingest / embed pipeline in this repo
-- No inventing points or weapon profiles when lookup misses - say you do not have the data
+- No second ingest/embed pipeline for rules or facts in this repo
+- No inventing points, profiles, or hit rates when a lookup misses - say you do not have the data
+- **No memorized tactical answers** - attachment picks, target priority, and "good vs" calls must be derived from real profiles/ability text/rules every time, checked against golden evals that score the reasoning process, not stored answers
+- Any hit/wound/save/expected-damage claim must go through the comparative (what-if) combat-math tool, never model arithmetic
+- **No mid-game live consultation** as a design target - Match Plan is pre-game only
+- Auth required from Phase 1 of the API - allowlisted to Dave; unauthenticated requests fail closed
+- Photo/vision board-reading is not planned - unreliable without camera calibration
+- Opponent-list uncertainty must be stated explicitly, not smoothed over - use tiered inputs (full list / faction+detachment / faction only) and `common_builds.yaml` assumptions, clearly labelled as assumptions
 - Standalone first - no Battleplan dependency to ship
-- Measure coaching with golden questions before calling it "smart"
-- Cheap model for simple asks; stronger model only on COACH when needed
+- Cheap model for simple asks; stronger model only on COACH/Match Plan when needed
 
 ## Phases (see `docs/plan_of_travel.md`)
 
 0. Scaffold (docs) - done
-1. Pages + API shell; read shared rules; Hydra voice
-2. Facts lookups once corpus publishes units/points
-3. Coach router + tools + eval (incl. Scarab scenario)
-4. Harden (Pulumi, IAM, rate limits)
+1. Pages + API shell; Firebase Auth allowlist; RULES mode
+2. FACTS lookups once corpus publishes units/points
+3. Comparative combat-math tool + COACH; golden evals begin (Thousand Sons cases, incl. Rubric attachment)
+4. Match Plan (flagship) - tiered inputs, `common_builds.yaml`, full plan orchestration
+5. Harden (Pulumi, IAM, rate limits, CI eval gate)
 
 ## Persona
 
-Hydra - cunning, multi-angle, meme-aware ("which head is speaking?"). Helpful coach, not a wall-of-PDF clerk.
+Hydra - cunning, multi-angle, meme-aware ("which head is speaking?"). A coach that plans with you before the game, not a wall-of-PDF clerk and not a mid-game crutch.

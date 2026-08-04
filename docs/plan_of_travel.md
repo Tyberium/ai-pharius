@@ -1,20 +1,23 @@
 # ai-pharius - Plan of Travel
 
-> The Hydra reads the books. Then it tells you how to win.
+> The Hydra reads the books, thinks it through before the game, and hands you a plan.
 
-Roadmap for **ai-pharius**: a standalone 11th-edition battlefield coach with a **GitHub Pages** front door.
+Roadmap for **ai-pharius**: a personal 11th-edition match-planning coach with a **GitHub Pages** front door and an **authenticated** Cloud Run API.
+
+Canonical mission, non-goals, diagrams, and reasoning philosophy: **[design.md](design.md)**.
 
 ---
 
 ## Principles
 
-1. **Consumer only** - no PDF download, no embed jobs, no corpus writes in this repo.
-2. **Ground facts, reason tactics** - never invent points or weapon profiles; do reason target priority from grounded stats.
-3. **Three modes, one API** - RULES (cite), FACTS (lookup), COACH (reason). Route before generating.
-4. **Summary first** - brief recommendation, then why, then citations / caveats.
-5. **11th edition only**.
-6. **Standalone** - Pages UI + Cloud Run; ship without other product UIs.
-7. **Measure coaching** - golden questions (incl. Scarab Assault Terminators vs mixed Tyranids) before calling it smart.
+1. **Consumer only for rules/facts** - no PDF download, no embed jobs, no corpus writes in this repo.
+2. **Reason, never memorize** - tactical conclusions (attachments, target priority, "good vs") must be derivable from real profiles, ability text, and rules every time. No hardcoded matchup answers.
+3. **Dice math is a tool** - any hit/wound/save/expected-damage claim goes through a deterministic, comparative (what-if) calculator, not LLM arithmetic.
+4. **Match Plan is the flagship mode** - pre-game, given your list plus whatever you know of the opponent. Not a mid-game chatbot.
+5. **State your assumptions** - when the opponent's exact list is unknown, say so and flag guessed units clearly (backed by a Dave-curated `common_builds.yaml`, not invented).
+6. **Auth from day one of the API** - Firebase Google sign-in; allowlisted to Dave. Pages shell may be public; the API is not usable without it.
+7. **11th edition only**.
+8. **Measure reasoning, not recall** - golden cases score whether the reasoning process reaches a sound, derivable conclusion (e.g. the Rubric-attachment case), never whether an answer was retrieved from storage.
 
 ---
 
@@ -25,79 +28,101 @@ Ingest and structured publishes live elsewhere ([roboto-guilliman](https://githu
 | Need | Source (when available) |
 |------|-------------------------|
 | Core rules citations | Vector collection `warhammer_rules_11th` |
-| Stratagem / faction text | Same index after faction packs are ingested |
+| Stratagem / detachment text | Same index after faction packs are ingested |
 | Unit points | Structured `unit_points` (Munitorum-derived) |
-| Weapons / profiles | Structured datasheet collections |
+| Weapons / profiles / ability text | Structured datasheets |
 
-Phases that need units **wait** on those collections existing. The Pages shell and rules-read path do not.
+Phases that need units **wait** on those collections existing. The Pages shell, auth, and rules-read path do not.
+
+`common_builds.yaml` (likely-opponent-units notes) is owned in **this** repo, hand-curated by Dave - not part of the shared corpus, not an ingestion pipeline.
 
 ---
 
 ## Phase 0 - Scaffold (done)
 
-- [x] Repo, README, this plan, `.gitignore`
-- **Exit:** docs-only public repo
+- [x] Repo, README, docs, `.gitignore`, Pages shell
+- **Exit:** docs + static site scaffold
 
 ---
 
-## Phase 1 - Standalone shell
+## Phase 1 - Standalone shell + auth
 
-**Goal:** Live Hydra feel, even if coaching is still thin.
+**Goal:** Live Hydra feel, gated to you, even if reasoning is still thin.
 
-1. FastAPI (health + ask) on Cloud Run  
-2. Read-only retriever against the shared rules index  
-3. GitHub Pages ask UI (keep it simple)  
-4. Summary-first answers; Hydra persona (not a rules-dump clerk)  
+1. FastAPI (health + ask) on Cloud Run
+2. Firebase Auth (Google sign-in) on the Pages UI; API verifies ID token + allowlist (Dave only)
+3. Read-only retriever against the shared rules index (**RULES** mode)
+4. Hydra persona, summary-first answers
 5. Own chat-history collection (`ai_pharius_chat_history`)
 
-**Exit:** Pages question → Hydra-voiced answer with citations; CI smoke on `/health`; no ingest code here.
+**Exit:** Sign in -> ask a rules question -> Hydra-voiced answer with citations; unauthenticated requests get 401; CI smoke on `/health`; no ingest code here.
 
 ---
 
 ## Phase 2 - Facts
 
-**Goal:** Honest points / weapon answers from structured lookups.
+**Goal:** Honest points / weapon / ability-text answers from structured lookups.
 
-1. Lookup client (exact + fuzzy unit names)  
-2. **FACTS** route - no inventing numbers from model memory  
-3. UI shows source stamp (document version / as-of date)  
+1. Lookup client (exact + fuzzy unit names)
+2. **FACTS** route - no inventing numbers from model memory
+3. Response shows source stamp (document version / as-of date)
 4. Golden spot-checks (e.g. named characters' points)
 
-**Exit:** Points questions return grounded number + source, or an explicit miss.
+**Exit:** Points/profile questions return a grounded answer + source, or an explicit miss.
 
 ---
 
-## Phase 3 - Coach mode
+## Phase 3 - Combat math + COACH (single-question reasoning)
 
-**Goal:** Multi-angle tactics grounded in profiles + rules.
+**Goal:** Reliable, derived answers to one-off tactical questions - the foundation Match Plan will orchestrate.
 
-1. Intent router: `RULES` | `FACTS` | `COACH`  
-2. Lookup / tools before generate (`get_unit`, `get_points`, optional rules retrieve)  
-3. Coach prompt: brief → why → rules note → caveats  
-4. Golden eval (15–30 Qs), including Scarab Terminators vs Hormagaunts + Screamer-Killer  
-5. Optional stronger model on COACH only  
-6. Pages mode badge (which head spoke)
+1. Deterministic combat-math calculator tool, **comparative/what-if** (weapon A vs. B, with vs. without a stratagem)
+2. Intent router: `RULES` | `FACTS` | `COACH`
+3. **COACH** - reasons over real profiles/abilities/rules for single questions (attachment picks, target priority, "what's good against X")
+4. Every probability claim routes through the calculator - never model arithmetic
+5. Golden eval suite begins here, checklist-scored (required/forbidden claims), starting with Thousand Sons cases including `ts_rubric_5_attach`
+6. Optional stronger model on COACH
 
-**Exit:** Scarab scenario passes human review; eval runnable in CI.
-
----
-
-## Phase 4 - Harden
-
-- Pulumi: Cloud Run + read IAM on shared collections + write own cache  
-- Rate limits / spend guards  
-- Clarifying questions when board state is incomplete  
-- Optional Discord / messaging later (same ask pipeline)  
-- Optional links from other sites - never a launch blocker  
+**Exit:** `ts_rubric_5_attach` and similar cases pass human review by reasoning from profiles/rules, not from a stored answer.
 
 ---
 
-## Non-goals (for now)
+## Phase 4 - Match Plan (flagship mode)
 
-- Second ingest / embed pipeline  
-- Full army-list builder  
-- Fine-tuning a custom model (prompt + tools + eval first)  
-- Merging with the arbiter / corpus repo  
+**Goal:** Given your list plus whatever you know of the opponent, produce one pre-game plan.
+
+1. Accept your full list + opponent info at any input tier (full list / faction+detachment / faction only)
+2. `common_builds.yaml` supplies likely-unit assumptions at tiers 2-3; every assumption is labelled as such in the output
+3. Orchestrate COACH + combat-math tool across: threat assessment, priority targets, attachment/support calls, stratagem/CP budget, deployment/screening, win-condition framing
+4. Assemble into one structured plan document
+5. Golden eval expands to full match-plan scenarios (e.g. Thousand Sons vs. "Tyranids, faction only, assume common builds")
+
+**Exit:** A full match plan against a known Thousand Sons list, and against an unknown-list Tyranids opponent (via `common_builds.yaml`), both pass human review with correctly flagged assumptions.
+
+---
+
+## Phase 5 - Harden
+
+- Pulumi: Cloud Run + read IAM on shared collections + write own cache
+- Rate limits / spend guards
+- CI eval gate using the golden suite
+- Optional Discord / messaging later (same ask pipeline)
+- Optional links from other sites - never a launch blocker
+
+Auth is already in Phase 1 - this phase tightens ops, cost, and quality gates.
+
+---
+
+## Non-goals (see design.md for rationale)
+
+- Mid-game live consultation
+- Memorized tactical answers of any kind
+- Photo / vision board-reading
+- Second ingest/embed pipeline for rules or facts
+- Automated meta-list scraping (Dave-curated file only, for now)
+- Full army-list builder
+- Fine-tuning a custom model (prompt + tools + eval first)
+- Merging with the arbiter/corpus repo
 
 ---
 
@@ -106,11 +131,13 @@ Phases that need units **wait** on those collections existing. The Pages shell a
 | Decision | Lean |
 |----------|------|
 | Same GCP project as the corpus? | Yes - separate SA + collections |
-| Pages URL | `tyberium.github.io/ai-pharius` first |
-| Damage-math helper tool? | Phase 3 if profiles are solid |
+| Pages URL | `tyberium.github.io/ai-pharius` (shell); API gated |
+| Firebase project | Own app config for ai-pharius Auth |
+| `common_builds.yaml` format | Simple faction/detachment -> typical units + short notes |
+| Combat-math tool shape | Must support comparative queries - locked in Phase 3, exact API TBD |
 
 ---
 
 ## Success snapshot
 
-Open the Pages site, ask the Scarab question, get a Hydra answer that used **real profiles and rules** - not a PDF regurgitator and not a hallucinated listicle.
+Sign in, hand the Hydra your Thousand Sons list and "playing Tyranids, don't know their list," and get back a plan that flags the likely opponent units as an assumption, gets the Rubric-attachment call right by reasoning, and backs every damage claim with calculator numbers.
