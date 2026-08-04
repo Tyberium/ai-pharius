@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ai-pharius - Battlefield Coach</title>
+    <title>ai-pharius - Match-Planning Coach</title>
     <meta
       name="description"
-      content="AI + Alpharius. Standalone Warhammer 40,000 11th edition battlefield coach."
+      content="AI + Alpharius. Personal Warhammer 40,000 11th edition match-planning coach."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,30 +36,30 @@
       <p class="brand">ai-pharius</p>
       <h1 class="headline">Which head is speaking?</h1>
       <p class="lede">
-        Standalone 11th-edition battlefield coach. Target priority, fire allocation, and the plan
-        that wins the turn - not a rules PDF on legs.
+        Personal 11th-edition match-planning coach. Hand it your list and what you know of the
+        opponent - it reasons a plan before the game, not between turns.
       </p>
 
       <section class="chat" id="chat" aria-label="Hydra counsel">
         <div class="chat-log" id="chat-log" role="log" aria-live="polite" aria-relevant="additions">
           <p class="chat-empty" id="chat-empty">
-            The Hydra coils in the dark. Ask, if you dare — no head is listening yet.
+            The Hydra coils in the dark. Bring a list, if you dare - no head is listening yet.
           </p>
         </div>
 
         <form class="ask" id="ask-form" autocomplete="off">
-          <label class="ask-label" for="ask-input">Ask the Hydra</label>
+          <label class="ask-label" for="ask-input">Plan with the Hydra</label>
           <textarea
             id="ask-input"
             name="q"
             rows="3"
             maxlength="2000"
-            placeholder="e.g. Scarab Assault Terminators into Hormagaunts and a Screamer-Killer - how do I split fire?"
+            placeholder="e.g. Thousand Sons list ready. Opponent: Tyranids, no list known. Build me a match plan."
           ></textarea>
           <div class="ask-row">
-            <button type="submit" class="cta" id="ask-submit">Consult the Hydra</button>
+            <button type="submit" class="cta" id="ask-submit">Request a Match Plan</button>
             <p class="status" id="ask-status" role="status">
-              Coach API offline — scaffold only. Voice arrives in Phase 1.
+              Match Plan API offline - scaffold only. Sign-in and counsel arrive in Phase 1.
             </p>
           </div>
         </form>

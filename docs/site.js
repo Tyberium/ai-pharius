@@ -12,9 +12,9 @@
 
   const SLEEPING_REPLY =
     "You dare disturb the Hydra while it sleeps? " +
-    "No head is awake — the coach API has not hatched yet. " +
-    "Your question dissolves into the void, unheard by bolt, blade, or stratagem. " +
-    "Return when Phase 1 lands; until then, split your fire the hard way. " +
+    "No head is awake - the Match Plan API has not hatched yet. " +
+    "Your list dissolves into the void, unheard by bolt, blade, or stratagem. " +
+    "Return when Phase 1 lands; until then, plan the hard way. " +
     "I am Alpharius. This is also a lie.";
 
   function escapeHtml(text) {
@@ -52,7 +52,7 @@
     const question = input.value.trim();
 
     if (!question) {
-      status.textContent = "Speak, twin. The Hydra needs a question.";
+      status.textContent = "Speak, twin. The Hydra needs a list - or at least a question.";
       input.focus();
       return;
     }
@@ -66,7 +66,7 @@
 
     window.setTimeout(() => {
       appendMessage("hydra", SLEEPING_REPLY);
-      status.textContent = "Still sleeping. Phase 1 brings the real counsel.";
+      status.textContent = "Still sleeping. Phase 1 brings sign-in and real counsel.";
       submit.disabled = false;
       input.focus();
     }, 900);
