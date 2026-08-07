@@ -95,7 +95,7 @@ Scoring is checklist-based (required claims present, forbidden claims absent), n
 
 ## Combat-math tool (design intent)
 
-Warhammer shooting/fighting is probability arithmetic (hit %, wound %, save %, damage). LLMs are weak at that and confidently wrong, so the coach never does this arithmetic itself.
+Warhammer shooting/fighting is probability arithmetic (hit %, wound %, save %, damage). LLMs are weak at that and confidently wrong, so ai-pharius never does this arithmetic itself.
 
 The tool must support **comparative, what-if queries**, not a single fixed calculation - e.g. "expected damage from Weapon A vs. Weapon B against this target," or "expected outcome with vs. without this stratagem applied." The LLM chooses which profiles and modifiers to compare; the tool owns all arithmetic.
 

@@ -62,7 +62,7 @@ Full diagrams: [docs/design.md](docs/design.md).
 
 | Layer | Choice |
 |-------|--------|
-| Coach API | FastAPI on Cloud Run (`europe-west1`), scale-to-zero |
+| API | FastAPI on Cloud Run (`europe-west1`), scale-to-zero |
 | Auth | Firebase Auth (Google), allowlisted UID |
 | LLM | Gemini (cheap path for RULES/FACTS; stronger model for Match Plan) |
 | Rules / facts | Read-only Firestore (shared corpus) |
@@ -71,7 +71,7 @@ Full diagrams: [docs/design.md](docs/design.md).
 | Infra | Pulumi + GitHub Actions |
 | Cost | Free-tier first |
 
-Pages UI is scaffolded; coach API is not wired yet.
+Pages UI is scaffolded; the API is not wired yet.
 
 ---
 
@@ -105,4 +105,4 @@ See **[docs/plan_of_travel.md](docs/plan_of_travel.md)** and **[docs/design.md](
 
 ## Related
 
-- [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman) - rules corpus / ingest platform this coach reads from
+- [roboto-guilliman](https://github.com/Tyberium/roboto-guilliman) - rules corpus / ingest platform ai-pharius reads from
