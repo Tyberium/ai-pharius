@@ -173,7 +173,7 @@
           Rows inside the GCP zone (y):
             250-340   API + Router
             340-460   gutter 1 (router fan-out bus, cache-write bus)
-            460-540   Mode row (RULES / FACTS / COACH / MATCH PLAN)
+            460-540   Mode row (RULES / FACTS / MATCH PLAN)
             540-680   gutter 2 (tool calls, corpus-read corridor entry)
             680-770   Tool row (Combat Math / Gemini / common_builds / chat_history)
             770-830   gutter 3
@@ -271,13 +271,9 @@
           <text x="1330" y="500" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13">FACTS</text>
           <text x="1330" y="522" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">points / profiles</text>
 
-          <rect x="1480" y="460" width="180" height="80" rx="2" fill="#071210" stroke="#1a8f72" stroke-width="1.5" />
-          <text x="1570" y="500" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="13">COACH</text>
-          <text x="1570" y="522" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">single tactical Q</text>
-
-          <rect x="1720" y="460" width="200" height="80" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
-          <text x="1820" y="498" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="12">MATCH PLAN</text>
-          <text x="1820" y="520" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">orchestrator · flagship</text>
+          <rect x="1480" y="460" width="440" height="80" rx="2" fill="#071210" stroke="#c4f062" stroke-width="1.5" />
+          <text x="1700" y="498" text-anchor="middle" fill="#c4f062" font-family="Orbitron, sans-serif" font-size="13">MATCH PLAN</text>
+          <text x="1700" y="521" text-anchor="middle" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">flagship · reasons every section, section by section</text>
 
           <!-- Tool lane label -->
           <text x="1000" y="665" fill="#1a8f72" font-family="Orbitron, sans-serif" font-size="10" letter-spacing="2">TOOLS</text>
@@ -372,7 +368,7 @@
           <text x="2670" y="1070" text-anchor="middle" fill="#2dd4a8" font-family="Orbitron, sans-serif" font-size="11" letter-spacing="2">WHO READS WHAT</text>
           <text x="2320" y="1120" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">RULES → warhammer_rules_11th</text>
           <text x="2320" y="1160" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">FACTS → unit_points / datasheets</text>
-          <text x="2320" y="1200" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">COACH / MATCH PLAN → both + math tool</text>
+          <text x="2320" y="1200" fill="#d7fff0" font-family="Sora, sans-serif" font-size="13">MATCH PLAN → both + math tool</text>
 
           <!-- ========== EDGES ========== -->
           <!-- Every connector below travels through an empty gutter row and
@@ -404,37 +400,31 @@
 
           <!-- Router fan-out: bus sits in gutter 1 (340-460), well clear of both rows above and below -->
           <path d="M1480 335 V395" stroke="#c4f062" stroke-width="1.5" fill="none" />
-          <path d="M1090 395 H1820" stroke="#c4f062" stroke-width="1.25" fill="none" />
+          <path d="M1090 395 H1700" stroke="#c4f062" stroke-width="1.25" fill="none" />
           <path d="M1090 395 V460" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
           <text x="1098" y="435" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">RULES</text>
           <path d="M1330 395 V460" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
           <text x="1338" y="435" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">FACTS</text>
-          <path d="M1570 395 V460" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
-          <text x="1578" y="435" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="9">COACH</text>
-          <path d="M1820 395 V460" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
-          <text x="1828" y="435" fill="#c4f062" font-family="Sora, sans-serif" font-size="9">PLAN</text>
+          <path d="M1700 395 V460" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
+          <text x="1708" y="435" fill="#c4f062" font-family="Sora, sans-serif" font-size="9">PLAN</text>
 
           <!-- API -> chat cache: own lane in gutter 1, offset from the router bus -->
           <path d="M1110 340 V430 H2100 V680 H2080" stroke="#9eb8ad" stroke-width="1.25" fill="none" stroke-dasharray="4 3" marker-end="url(#a-mist)" />
           <text x="1900" y="422" fill="#9eb8ad" font-family="Sora, sans-serif" font-size="10">cache write</text>
 
-          <!-- Match Plan -> COACH (uses): direct, sits entirely in the gap between the two boxes -->
-          <path d="M1720 500 H1660" stroke="#c4f062" stroke-width="1.5" fill="none" marker-end="url(#a-lime)" />
-          <text x="1663" y="490" fill="#c4f062" font-family="Sora, sans-serif" font-size="9">uses</text>
-
           <!-- Match Plan -> common_builds: gutter 2 lane, own x column, clear of every mode box -->
-          <path d="M1820 540 V600 H1710 V680" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
+          <path d="M1780 540 V600 H1710 V680" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
           <text x="1730" y="590" fill="#c4f062" font-family="Sora, sans-serif" font-size="10">assumptions</text>
 
-          <!-- COACH -> Combat Math: gutter 2 lane, own x column -->
+          <!-- Match Plan -> Combat Math: gutter 2 lane, own x column - per-section what-if calls -->
           <path d="M1560 540 V600 H1130 V680" stroke="#c4f062" stroke-width="1.75" fill="none" marker-end="url(#a-lime)" />
           <text x="1290" y="590" fill="#c4f062" font-family="Sora, sans-serif" font-size="10">what-if</text>
 
           <!-- Modes -> Gemini: shared bus, own lane below the previous two -->
           <path d="M1090 540 V565" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
           <path d="M1330 540 V565" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
-          <path d="M1600 540 V565" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
-          <path d="M1090 565 H1600" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
+          <path d="M1700 540 V565" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
+          <path d="M1090 565 H1700" stroke="#2dd4a8" stroke-width="1.25" fill="none" />
           <path d="M1430 565 V680" stroke="#2dd4a8" stroke-width="1.5" fill="none" marker-end="url(#a-teal)" />
           <text x="1438" y="600" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="10">generate</text>
 
@@ -459,7 +449,7 @@
 
           <path d="M1520 540 V662 H2180 V390 H2280" stroke="#2dd4a8" stroke-width="1.25" fill="none" stroke-dasharray="4 3" marker-end="url(#a-teal)" />
           <path d="M1640 540 V668 H2190 V590 H2280" stroke="#2dd4a8" stroke-width="1.25" fill="none" stroke-dasharray="4 3" marker-end="url(#a-teal)" />
-          <text x="1970" y="702" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="10">COACH reads both (dashed)</text>
+          <text x="1930" y="702" fill="#2dd4a8" font-family="Sora, sans-serif" font-size="10">MATCH PLAN reads both (dashed)</text>
         </svg>
       </div>
 

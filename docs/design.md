@@ -29,6 +29,8 @@ Every tactical conclusion must be **derivable**: read off toughness/saves/invuln
 5. **Deployment / screening guidance** - what needs protecting, what needs to threaten first
 6. **Win-condition framing** - objective/secondary alignment given both lists
 
+Every section above is reasoned independently - real profiles/rules/ability text in, a derived conclusion out, probability claims backed by the combat-math tool - then assembled into one document. There is no separate "ask a quick tactical question" mode; that reasoning *is* Match Plan, just applied section by section.
+
 ### Input tiers (you rarely have a full list)
 
 | Tier | What you know | What the plan can promise |
@@ -47,12 +49,6 @@ Not official rules text, not a fixed fact, and it goes stale as the meta shifts 
 - **Later, if worth it:** automated scraping of tournament list sites would be a real ingestion pipeline - if we ever want that, it belongs in roboto-guilliman as another published collection. Not planned for v1.
 
 ---
-
-## Secondary mode: COACH (standalone tactical questions)
-
-For one-off reasoning questions that don't need a full plan - e.g. "best character to attach to 5 Rubric Marines?" or "what should I target-priority between a Screamer-Killer and a Hormagaunt blob?"
-
-Same reasoning discipline as Match Plan, just narrower scope. Match Plan is effectively COACH run across every facet of a matchup and assembled into one document.
 
 ## Supporting modes
 
@@ -87,6 +83,8 @@ Example case `ts_rubric_5_attach`:
 | Must reference | Disk's Movement/speed mismatch with a small, static unit; the ability's trigger (models destroyed / healed) being unlikely to pay off before a 5-model unit is wiped; better fit on a 10-model unit |
 | Faction focus | Thousand Sons first, expand later |
 
+This is scored against Match Plan's attachment-call reasoning directly (single facet, in isolation) - no separate mode or endpoint needed to test it.
+
 Scoring is checklist-based (required claims present, forbidden claims absent), not exact-string matching.
 
 - **Primary metric:** % of golden cases with all required claims and zero forbidden claims
@@ -101,7 +99,7 @@ Warhammer shooting/fighting is probability arithmetic (hit %, wound %, save %, d
 
 The tool must support **comparative, what-if queries**, not a single fixed calculation - e.g. "expected damage from Weapon A vs. Weapon B against this target," or "expected outcome with vs. without this stratagem applied." The LLM chooses which profiles and modifiers to compare; the tool owns all arithmetic.
 
-Exact API shape lands in the Match Plan / COACH phase of the plan of travel - this doc locks the principle: **no vibes for dice math, and no single-shot calculator that can't compare options.**
+Exact API shape lands in the Match Plan phase of the plan of travel - this doc locks the principle: **no vibes for dice math, and no single-shot calculator that can't compare options.**
 
 ---
 
@@ -124,8 +122,7 @@ flowchart TB
         router{Intent Router}
         rulesTool[Rules Retriever]
         factsTool[Facts Lookup]
-        coachTool[Coach Reasoner]
-        planTool[Match Plan Orchestrator]
+        planTool[Match Plan Reasoner]
         mathTool[Combat Math Calculator - what-if]
         llm[Gemini]
         commonBuilds[("common_builds.yaml - Dave-curated")]
@@ -143,18 +140,16 @@ flowchart TB
     api -->|"verify token + allowlist"| router
     router -->|RULES| rulesTool
     router -->|FACTS| factsTool
-    router -->|"COACH single question"| coachTool
     router -->|"Match Plan"| planTool
-    planTool --> coachTool
     planTool --> commonBuilds
-    coachTool --> mathTool
+    planTool --> mathTool
     rulesTool --> rulesDb
     factsTool --> unitsDb
-    coachTool --> unitsDb
-    coachTool --> rulesDb
+    planTool --> unitsDb
+    planTool --> rulesDb
     rulesTool --> llm
     factsTool --> llm
-    coachTool --> llm
+    planTool --> llm
     llm --> api
     api --> cache
     api -->|"answer or plan"| pages
@@ -163,7 +158,7 @@ flowchart TB
 ### Data ownership
 
 - **Shared corpus** (rules vectors, points, datasheets): published by roboto-guilliman; ai-pharius reads only.
-- **Owned here:** chat cache, allowlist config, coach/plan prompts and router, `common_builds.yaml`.
+- **Owned here:** chat cache, allowlist config, plan prompts and router, `common_builds.yaml`.
 
 ### Auth model
 
@@ -202,19 +197,16 @@ flowchart LR
     q[Request] --> classify{What is being asked?}
     classify -->|"Rule text or timing"| rules[RULES: cite corpus]
     classify -->|"Points or weapon profile"| facts[FACTS: structured lookup]
-    classify -->|"One tactical question"| coach["COACH: reason plus combat math"]
-    classify -->|"My list plus opponent info"| plan["MATCH PLAN: orchestrate COACH across threats, targets, attachments, stratagems, deployment"]
+    classify -->|"My list plus opponent info"| plan["MATCH PLAN: reason threats, targets, attachments, stratagems, deployment"]
 
     rules --> answer["Brief, then why, then citation"]
     facts --> answer
-    coach --> mathCalc[Call combat-math tool]
-    mathCalc --> answer
-    plan --> planMath[Multiple combat-math comparisons]
+    plan --> planMath[Combat-math comparisons per section]
     planMath --> planAssemble[Assemble plan sections]
     planAssemble --> answer
 ```
 
-Answer shape: **brief -> why -> rules note -> caveats** for COACH; structured sections for Match Plan.
+Answer shape: **brief -> why -> rules note -> caveats** per section, assembled into one structured Match Plan document.
 
 ---
 
@@ -225,10 +217,10 @@ Answer shape: **brief -> why -> rules note -> caveats** for COACH; structured se
 | Frontend | GitHub Pages (`docs/`) |
 | Auth | Firebase Auth (Google), allowlisted UID |
 | API | FastAPI on Cloud Run (`europe-west1`), scale-to-zero |
-| LLM | Gemini - cheap path for RULES/FACTS; stronger model for COACH/Match Plan |
+| LLM | Gemini - cheap path for RULES/FACTS; stronger model for Match Plan |
 | Rules / facts | Read-only Firestore shared corpus |
 | Meta knowledge | `common_builds.yaml`, Dave-curated, owned in this repo |
-| Coach cache | Own Firestore collection |
+| Plan cache | Own Firestore collection |
 | Infra | Pulumi + GitHub Actions |
 | Cost | Free-tier first |
 

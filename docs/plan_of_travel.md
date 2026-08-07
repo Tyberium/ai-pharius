@@ -72,16 +72,16 @@ Phases that need units **wait** on those collections existing. The Pages shell, 
 
 ---
 
-## Phase 3 - Combat math + COACH (single-question reasoning)
+## Phase 3 - Combat math + Match Plan reasoning core
 
-**Goal:** Reliable, derived answers to one-off tactical questions - the foundation Match Plan will orchestrate.
+**Goal:** Reliable, derived reasoning for a single plan section - the core Match Plan will run across every section.
 
 1. Deterministic combat-math calculator tool, **comparative/what-if** (weapon A vs. B, with vs. without a stratagem)
-2. Intent router: `RULES` | `FACTS` | `COACH`
-3. **COACH** - reasons over real profiles/abilities/rules for single questions (attachment picks, target priority, "what's good against X")
+2. Intent router: `RULES` | `FACTS` | `MATCH PLAN`
+3. Match Plan's section reasoner - reasons over real profiles/abilities/rules for a single facet (attachment picks, target priority, "what's good against X")
 4. Every probability claim routes through the calculator - never model arithmetic
-5. Golden eval suite begins here, checklist-scored (required/forbidden claims), starting with Thousand Sons cases including `ts_rubric_5_attach`
-6. Optional stronger model on COACH
+5. Golden eval suite begins here, checklist-scored (required/forbidden claims), starting with Thousand Sons cases including `ts_rubric_5_attach` - run directly against the section reasoner, no full plan needed to test it
+6. Optional stronger model on the section reasoner
 
 **Exit:** `ts_rubric_5_attach` and similar cases pass human review by reasoning from profiles/rules, not from a stored answer.
 
@@ -93,7 +93,7 @@ Phases that need units **wait** on those collections existing. The Pages shell, 
 
 1. Accept your full list + opponent info at any input tier (full list / faction+detachment / faction only)
 2. `common_builds.yaml` supplies likely-unit assumptions at tiers 2-3; every assumption is labelled as such in the output
-3. Orchestrate COACH + combat-math tool across: threat assessment, priority targets, attachment/support calls, stratagem/CP budget, deployment/screening, win-condition framing
+3. Run the section reasoner + combat-math tool across: threat assessment, priority targets, attachment/support calls, stratagem/CP budget, deployment/screening, win-condition framing
 4. Assemble into one structured plan document
 5. Golden eval expands to full match-plan scenarios (e.g. Thousand Sons vs. "Tyranids, faction only, assume common builds")
 

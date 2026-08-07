@@ -50,7 +50,7 @@ Shared corpus (rules vectors, points, datasheets)     common_builds.yaml
            ▼                                              this repo)
 ai-pharius
   auth: Firebase ID token + allowlist
-  RULES cite | FACTS lookup | COACH single-question | MATCH PLAN (flagship)
+  RULES cite | FACTS lookup | MATCH PLAN (flagship - reasons every section from profiles/rules/math)
   API (Cloud Run) + GitHub Pages shell
 ```
 
@@ -64,7 +64,7 @@ Full diagrams: [docs/design.md](docs/design.md).
 |-------|--------|
 | Coach API | FastAPI on Cloud Run (`europe-west1`), scale-to-zero |
 | Auth | Firebase Auth (Google), allowlisted UID |
-| LLM | Gemini (cheap path for RULES/FACTS; stronger model for COACH/Match Plan) |
+| LLM | Gemini (cheap path for RULES/FACTS; stronger model for Match Plan) |
 | Rules / facts | Read-only Firestore (shared corpus) |
 | Meta knowledge | `common_builds.yaml`, hand-curated, owned here |
 | Frontend | Static site on **GitHub Pages** |
@@ -97,7 +97,7 @@ See **[docs/plan_of_travel.md](docs/plan_of_travel.md)** and **[docs/design.md](
 0. Scaffold (docs) - done
 1. Pages + API shell; auth allowlist; read shared rules (RULES)
 2. Facts lookups (points/weapons) once the corpus publishes them
-3. Comparative combat-math tool + COACH (single-question reasoning), golden evals begin
+3. Comparative combat-math tool, golden evals begin (single-section reasoning cases)
 4. Match Plan (flagship) - list + opponent-info at any tier, full plan
 5. Harden - CI, IAM, rate limits, eval gate
 

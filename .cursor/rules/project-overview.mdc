@@ -41,10 +41,9 @@ Ingest and structured unit publishes live in [roboto-guilliman](https://github.c
 
 1. **RULES** - cite from shared vector corpus
 2. **FACTS** - lookup points / weapons / ability text from structured stores (when published)
-3. **COACH** - single tactical question (attachment picks, target priority, "good vs X"); reasons from real profiles/rules; probability claims via the comparative combat-math tool
-4. **MATCH PLAN** (flagship) - your list + whatever you know of the opponent, at any input tier; orchestrates COACH across threats, targets, attachments, stratagem budget, deployment, win-conditions into one plan; explicitly flags any guessed opponent units as assumptions
+3. **MATCH PLAN** (flagship) - your list + whatever you know of the opponent, at any input tier; reasons threats, targets, attachments, stratagem budget, deployment, win-conditions section by section (attachment picks, target priority, "good vs X" - all derived from real profiles/rules, probability claims via the comparative combat-math tool) and assembles it into one plan; explicitly flags any guessed opponent units as assumptions
 
-Answer shape: **brief -> why -> rules note -> caveats** for COACH; structured sections for Match Plan.
+Answer shape: **brief -> why -> rules note -> caveats** per section, assembled into one structured Match Plan document.
 
 ## North-star
 
@@ -59,15 +58,15 @@ Thousand Sons list in hand, opponent faction known (Tyranids) but no list confir
 - Auth required from Phase 1 of the API - allowlisted to Dave; unauthenticated requests fail closed
 - Opponent-list uncertainty must be stated explicitly, not smoothed over - use tiered inputs (full list / faction+detachment / faction only) and `common_builds.yaml` assumptions, clearly labelled as assumptions
 - Standalone first - no Battleplan dependency to ship
-- Cheap model for simple asks; stronger model only on COACH/Match Plan when needed
+- Cheap model for simple asks; stronger model only on Match Plan reasoning when needed
 
 ## Phases (see `docs/plan_of_travel.md`)
 
 0. Scaffold (docs) - done
 1. Pages + API shell; Firebase Auth allowlist; RULES mode
 2. FACTS lookups once corpus publishes units/points
-3. Comparative combat-math tool + COACH; golden evals begin (Thousand Sons cases, incl. Rubric attachment)
-4. Match Plan (flagship) - tiered inputs, `common_builds.yaml`, full plan orchestration
+3. Comparative combat-math tool + Match Plan reasoning; golden evals begin (Thousand Sons cases, incl. Rubric attachment)
+4. Match Plan (flagship) - tiered inputs, `common_builds.yaml`, full plan assembly
 5. Harden (Pulumi, IAM, rate limits, CI eval gate)
 
 ## Persona
